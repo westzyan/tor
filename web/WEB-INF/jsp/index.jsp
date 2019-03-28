@@ -11,10 +11,10 @@ To change this template use File | Settings | File Templates.
     <title>Title</title>
 </head>
 <frameset frameborder="0" rows="60,*">
-    <frame src="top.jsp" noresize="noresize" scrolling="no"/>
+    <frame src="${pageScope.request.ContextPath}/top" noresize="noresize" scrolling="no"/>
     <frameset frameborder="0" cols="210,*">
-        <frame src="left.jsp" noresize="noresize" scrolling="no"/>
-        <frame src="right.jsp" noresize="noresize" scrolling="yes"
+        <frame src="${pageScope.request.ContextPath}/left" noresize="noresize" scrolling="no"/>
+        <frame src="${pageScope.request.ContextPath}/right" noresize="noresize" scrolling="yes"
                name="main"/>
     </frameset>
 </frameset>
