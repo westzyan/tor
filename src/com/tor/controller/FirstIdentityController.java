@@ -66,4 +66,19 @@ public class FirstIdentityController {
 
         return "index";
     }
+
+    @RequestMapping(value = "top")
+    public String top() {
+        return "top";
+    }
+
+    @RequestMapping(value = "left")
+    public String left() {
+        return "left";
+    }
+
+    @RequestMapping(value = "right")
+    public String right() {
+        return "right";
+    }
 }
