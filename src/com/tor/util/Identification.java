@@ -8,6 +8,7 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 
@@ -387,6 +388,15 @@ public class Identification {
 
         return ServerResponse.createBySuccess(list);
 
+    }
+    public List<Traffic> trafficToFlow(List<Traffic> trafficList){
+        List<Traffic> list = new ArrayList<Traffic>();
+        for(Iterator iterator = list.iterator(); iterator.hasNext();){
+            Traffic traffic = (Traffic) iterator.next();
+            if(list.contains(traffic))
+            list.add(traffic);
+        }
+        return null;
     }
 
     public static void main(String[] args) {

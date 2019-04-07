@@ -18,6 +18,11 @@
     <mvc:resources location="/WEB-INF/css/" mapping="/css/**"/>
     <mvc:resources location="/WEB-INF/js/" mapping="/js/**"/>
 
+    <!--&lt;!&ndash;两个标准配置  &ndash;&gt;-->
+    <!--&lt;!&ndash; 能支持springmvc更高级的一些功能，JSR303校验，快捷的ajax...映射动态请求 &ndash;&gt;-->
+    <!--<mvc:annotation-driven/>-->
+    <!--&lt;!&ndash; 将springmvc不能处理的请求交给tomcat &ndash;&gt;-->
+    <!--<mvc:default-servlet-handler/>-->
 
     <!-- 配置视图解析器，把控制器的逻辑视频映射为真正的视图 -->
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver"
