@@ -6,6 +6,7 @@ import com.tor.pojo.Traffic;
 import com.tor.service.IFirstIdentityService;
 import com.tor.util.Identification;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -14,10 +15,30 @@ import java.util.List;
 public class FirstIdentityServiceImpl implements IFirstIdentityService {
 
 
-    public ServerResponse<List<Traffic>> getIdentityList(String filePath) {
+    public ServerResponse<PageBean> getIdentityList(String filePath) {
         Identification identification = new Identification();
-        return identification.getLastTrafficList(filePath);
+        ServerResponse<List<Traffic>> serverResponse = identification.getLastTrafficList(filePath);
+        List<Traffic> trafficList = serverResponse.getData();
+        int status = serverResponse.getStatus();
+        String msg = serverResponse.getMsg();
+
+        if(status == 0){
+            return this.queryForPage(20, 1, trafficList);
+        }else {
+            return ServerResponse.createByErrorMessage(msg);
+        }
     }
+
+    public List<Traffic> getAllList(String filePath){
+        Identification identification = new Identification();
+        ServerResponse<List<Traffic>> serverResponse = identification.getLastTrafficList(filePath);
+        List<Traffic> trafficList = serverResponse.getData();
+
+        return trafficList;
+    }
+
+
+
 
 
     /**

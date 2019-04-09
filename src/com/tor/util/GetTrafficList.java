@@ -65,7 +65,6 @@ public class GetTrafficList {
 //			p.waitFor();
             br = new BufferedReader(new InputStreamReader(p.getInputStream()));
             String line = null;
-            System.out.println("hehe22222");
             while ((line = br.readLine()) != null) {
                 System.out.println(line);
                 String[] a = new GetTrafficList().trafficStringHandle(line);

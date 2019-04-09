@@ -11,8 +11,8 @@
 <head>
     <meta charset="UTF-8">
     <title></title>
-    <link rel="stylesheet" href="css/common.css">
-    <link rel="stylesheet" type="text/css" href="css/StudentInfo.css"/>
+    <link rel="stylesheet" href="${pageScope.request.ContextPath}/css/common.css">
+    <link rel="stylesheet" type="text/css" href="${pageScope.request.ContextPath}/css/iden.css"/>
 </head>
 <body>
 <center>
@@ -31,7 +31,7 @@
                     <div class="table">
                         <c:if test="${res.data != null}">
                             <div class="thead">
-                                <span>流量总条数:${res.data.allRow}</span>
+                               <span>流量总条数:${res.data.allRow}</span>
                                 <p>Tor流量初步判别结果</p>
                             </div>
                             <table border="1" class="tab_css_1" width="80%">
@@ -44,7 +44,7 @@
                                     <th>协议</th>
                                     <th>是否为Tor</th>
                                 </tr>
-                                <c:forEach items="${res.data}" var="traffic">
+                                <c:forEach items="${res.data.list}" var="traffic">
                                     <tr class="tr_css" align="center">
                                         <td>${traffic.id}</td>
                                         <td>${traffic.sourceIP}</td>
@@ -61,36 +61,47 @@
                                 </c:forEach>
                             </table>
 
-                            <c:forEach items="${res.data}" var="pageBean">
+                            <%--<c:forEach items="${res.data}" var="res.data">--%>
                                 <tr>
                                     <td colspan="6" align="center" bgcolor="#5BA8DE">
-                                        共${pageBean.allRow}条记录 &nbsp; &nbsp;&nbsp;&nbsp;
-                                        共${pageBean.totalPage}页 &nbsp;&nbsp;&nbsp;
-                                        当前第${pageBean.currentPage}页<br>
+                                        共${res.data.allRow}条记录 &nbsp; &nbsp;&nbsp;&nbsp;
+                                        共${res.data.totalPage}页 &nbsp;&nbsp;&nbsp;
+                                        当前第${res.data.currentPage}页<br>
                                         <form action="/first/identity_by_page" method="post">
 												 <span>跳转到第<input type="text" name="page"
-                                                                  style="height: 35px; width: 10%;">页
+                                                                  style="height: 35px; width: 10%;" id="page">页
 												 <input type=submit value="跳转" style="height: 35px; width: 10%;"></span>
+                                            <%--每页显示<input type="text" name="pageSize" value="${res.data.pageSize}"--%>
+                                                       <%--style="height: 35px; width: 10%;" id="pageSize">条--%>
                                         </form>
 
-                                        <c:if test="${pageBean.currentPage} == 1">第一页 &nbsp;&nbsp;上一页&nbsp;&nbsp;</c:if>
-                                        <!-- currentPage为当前页 -->
-                                        <c:if test="${pageBean.currentPage} != 1">
-                                            <a href="/first/identity_by_page?page=1">第一页</a>&nbsp;&nbsp;
-                                            <a href="/first/identity_by_page?page=${pageBean.currentPage-1}">上一页</a>&nbsp;&nbsp;
-                                        </c:if>
+                                        <c:choose>
+                                            <c:when test="${res.data.currentPage == 1}">
+                                                第一页 &nbsp;&nbsp;上一页&nbsp;&nbsp;
+                                            </c:when>
+                                            <c:otherwise>
+                                                <a href="/first/identity_by_page?page=1" id="firstPage">第一页</a>&nbsp;&nbsp;
+                                                <a href="/first/identity_by_page?page=${res.data.currentPage-1}" id="previousPage">上一页</a>&nbsp;&nbsp;
+                                            </c:otherwise>
+                                        </c:choose>
 
+                                        <c:choose>
+                                            <c:when test="${res.data.currentPage != res.data.totalPage}">
+                                                <a href="/first/identity_by_page?page=${res.data.currentPage + 1}" id="nextPage">下一页</a>&nbsp;&nbsp;
+                                                <a href="/first/identity_by_page?page=${res.data.totalPage}" id="lastPage">最后一页</a>
+                                                <%--/first/identity_by_page?page=${res.data.totalPage}&pageSize=pageSize--%>
+                                                <%--/first/identity_by_page?page=${res.data.currentPage + 1}&pageSize=pageSize--%>
+                                                <%--/first/identity_by_page?page=${res.data.currentPage-1}&pageSize=pageSize--%>
+                                                <%--/first/identity_by_page?page=1&pageSize=--%>
+                                            </c:when>
+                                            <c:otherwise>
+                                                &nbsp;&nbsp;下一页 &nbsp;&nbsp;最后一页
+                                            </c:otherwise>
+                                        </c:choose>
 
-                                        <c:if test="${pageBean.currentPage} != ${pageBean.totalPage}">
-                                            <a href="/first/identity_by_page?page=${pageBean.currentPage + 1}">下一页</a>&nbsp;&nbsp;
-                                            <a href="/first/identity_by_page?page=${pageBean.totalPage}">最后一页</a>
-                                        </c:if>
-                                        <c:if test="${pageBean.currentPage} == ${pageBean.totalPage}">
-                                            &nbsp;&nbsp;下一页 &nbsp;&nbsp;最后一页
-                                        </c:if>
                                     </td>
                                 </tr>
-                            </c:forEach>
+                            <%--</c:forEach>--%>
                         </c:if>
 
 
@@ -100,7 +111,7 @@
 
                         <c:if test="${not empty res}">
                         <div>状态${res.status}信息${res.msg}</div>
-                        </div>
+                    </div>
                     </c:if>
                     <c:if test="${ empty res}">
                         对不起，请先<a href="/user/login">登录</a>
@@ -131,12 +142,63 @@
 <script>
     //对应后台返回的提示
     if ('${res.status}' != '') {
-        if ('${res.status}' == 0) {
-            alert('登录成功,即将跳转至用户详情页！')
-        }else if ('${res.status}' == 1) {
+         if ('${res.status}' == 1) {
             alert('${res.msg}');
         }
 
     }
+
 </script>
+
+<%--<script src="https://cdn.bootcss.com/jquery/1.10.2/jquery.min.js" type="text/javascript"--%>
+        <%--charset="utf-8"></script>--%>
+<%--<script type="text/javascript">--%>
+    <%--$(document).ready(function(){--%>
+        <%--//点击链接的时候调用--%>
+        <%--$("#lastPage").click(function(){--%>
+
+            <%--//得到input的值--%>
+            <%--var pageSize = $("#pageSize").val();--%>
+
+            <%--//得到id的值--%>
+            <%--var page = ${res.data.totalPage};--%>
+
+            <%--//设置linkToCart的href的值--%>
+            <%--$("#lastPage").attr("href","/first/identity_by_page?page=" + page + "&pageSize = " + pageSize);--%>
+        <%--});--%>
+
+        <%--$("#nextPage").click(function(){--%>
+
+            <%--//得到input的值--%>
+            <%--var pageSize = $("#pageSize").val();--%>
+
+            <%--//得到id的值--%>
+            <%--var page = ${res.data.currentPage + 1};--%>
+
+            <%--//设置linkToCart的href的值--%>
+            <%--$("#nextPage").attr("href","/first/identity_by_page?page=" + page + "&pageSize = " + pageSize);--%>
+        <%--});--%>
+
+        <%--$("#previousPage").click(function(){--%>
+
+            <%--//得到input的值--%>
+            <%--var pageSize = $("#pageSize").val();--%>
+
+            <%--//得到id的值--%>
+            <%--var page = ${res.data.currentPage - 1};--%>
+
+            <%--//设置linkToCart的href的值--%>
+            <%--$("#previousPage").attr("href","/first/identity_by_page?page=" + page + "&pageSize = " + pageSize);--%>
+        <%--});--%>
+
+        <%--$("#firstPage").click(function(){--%>
+
+            <%--//得到input的值--%>
+            <%--var pageSize = $("#pageSize").val();--%>
+            <%----%>
+            <%--//设置linkToCart的href的值--%>
+            <%--$("#firstPage").attr("href","/first/identity_by_page?page=1"+ "&pageSize = " + pageSize);--%>
+        <%--});--%>
+    <%--});--%>
+<%--</script>--%>
 </html>

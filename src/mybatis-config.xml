@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+    <!--<settings>-->
+        <!--<setting name="logImpl" value="LOG4J"/>-->
+        <!--<setting name="mapUnderscoreToCamelCase" value="true"/>-->
+        <!--<setting name="jdbcTypeForNull" value="NULL"/>-->
+    <!--</settings>-->
+    <!--&lt;!&ndash; pojo的映射文件UserMapper引入到配入到配置文件中 &ndash;&gt;-->
+    <!--<mappers>-->
+        <!--&lt;!&ndash; resource要写成路径 &ndash;&gt;-->
+        <!--<mapper resource="com/tor/mapper/PcapMapper.xml"/>-->
+    <!--</mappers>-->
+</configuration>

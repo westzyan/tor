@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 
 import javax.servlet.http.HttpSession;
@@ -35,8 +36,10 @@ public class FirstIdentityController {
             session.setAttribute("list", null);
             model.addAttribute("res", response);
         } else {
-            ServerResponse<List<Traffic>> response = iFirstIdentityService.getIdentityList(filePath);
-            session.setAttribute("list", response.getData());
+            //ServerResponse<List<Traffic>> response = iFirstIdentityService.getIdentityList(filePath);
+            ServerResponse<PageBean> response = iFirstIdentityService.getIdentityList(filePath);
+            List<Traffic> trafficList = iFirstIdentityService.getAllList(filePath);
+            session.setAttribute("list", trafficList);
             model.addAttribute("res", response);
         }
         return "first_identity";
@@ -62,8 +65,7 @@ public class FirstIdentityController {
 
 
     @RequestMapping(value = "index")
-    public String index(HttpSession session) {
-
+    public String index() {
         return "index";
     }
 
