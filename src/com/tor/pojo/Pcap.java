@@ -10,6 +10,9 @@ public class Pcap {
     private String filePath;
     private String isHandled;
     private String sha1Value;
+    private Date createTime;
+    private Date updateTime;
+
 
     public String getSha1Value() {
         return sha1Value;
@@ -19,10 +22,19 @@ public class Pcap {
         this.sha1Value = sha1Value;
     }
 
-    private Date createTime;
-    private Date updateTime;
 
     public Pcap() {
+    }
+
+    public Pcap(Integer id, String fileName, Float fileSize, String filePath, String isHandled, String sha1Value, Date createTime, Date updateTime) {
+        this.id = id;
+        this.fileName = fileName;
+        this.fileSize = fileSize;
+        this.filePath = filePath;
+        this.isHandled = isHandled;
+        this.sha1Value = sha1Value;
+        this.createTime = createTime;
+        this.updateTime = updateTime;
     }
 
     public Integer getId() {

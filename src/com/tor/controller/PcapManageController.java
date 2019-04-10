@@ -14,24 +14,26 @@ import java.io.File;
 import java.util.List;
 
 @Controller
-@RequestMapping("/pcap/")
 public class PcapManageController {
 
     @Autowired
     private IPcapManageService iPcapManageService;
 
-    @RequestMapping("list.do")
-    @ResponseBody
-    public String getAllPcap(Model model){
+
+    @RequestMapping("/pcap/list")
+    public String getAllPcap(Model model) {
 //        return iPcapManageService.getAllPcap();
         System.out.println(iPcapManageService.getAllPcap().getData().size());
+        System.out.println("/pcap/list-------------------");
+
         model.addAttribute("res", iPcapManageService.getAllPcap());
-        return "lll";
+        model.addAttribute("size", iPcapManageService.getAllPcap().getData().size());
+        return "pcap_manage";
     }
 
 
-
-    public String deletePcapById(Model model, Integer id){
+    @RequestMapping("/pcap/delete_by_id")
+    public String deletePcapById(Model model, Integer id) {
         model.addAttribute("res", iPcapManageService.deletePcapById(id));
 //        物理删除
 //        Pcap pcap = iPcapManageService.selectById(id);
@@ -39,29 +41,51 @@ public class PcapManageController {
 //            File pcapFile = new File(pcap.getFilePath() + "/" + pcap.getFileName());
 //            pcapFile.delete();
 //        }
-        return null;
+        return "pcap_manage";
     }
 
-    public String insertPcap(Model model, Pcap pcap, String filePath){
+    @RequestMapping("/pcap/delete_by_ids")
+    public String deletePcapById(Model model, String ids) {
+        //2,3,4
+        String[] idArray = ids.split(",");
+        for(int i = 0; i < idArray.length; i++){
+            int id = Integer.parseInt(idArray[i]);
+            if (!iPcapManageService.deletePcapById(id).isSuccess()){
+                model.addAttribute("res", ServerResponse.createBySuccess("删除失败，id为"+id, iPcapManageService.getAllPcap()));
+            }
+        }
+        model.addAttribute("res", ServerResponse.createBySuccess("删除成功", iPcapManageService.getAllPcap()));
+//        物理删除
+//        Pcap pcap = iPcapManageService.selectById(id);
+//        if (pcap != null){
+//            File pcapFile = new File(pcap.getFilePath() + "/" + pcap.getFileName());
+//            pcapFile.delete();
+//        }
+        return "pcap_manage";
+    }
+
+    @RequestMapping("/pcap/insert")
+    public String insertPcap(Model model,  String filePath) {
         File file = new File(filePath);
-        if(!file.exists()){
+        if (!file.exists()) {
             model.addAttribute("res", ServerResponse.createByErrorMessage("文件不存在"));
-        }else{
+        } else {
             String sha1Value = PcapManageUtil.getFileSha1(file);
             Pcap pcap1 = iPcapManageService.selectBySha1Value(sha1Value);
-            if( pcap1 != null){
-                model.addAttribute("res",ServerResponse.createByErrorMessage("仓库中已存在该文件,该文件名为"+ pcap1.getFileName()+" 文件路径为" +
+            if (pcap1 != null) {
+                model.addAttribute("res", ServerResponse.createByErrorMessage("仓库中已存在该文件,该文件名为" + pcap1.getFileName() + " 文件路径为" +
                         pcap1.getFilePath()));
-            }else {
+            } else {
+                Pcap pcap = new Pcap();
                 pcap.setFileName(file.getName());
                 pcap.setFilePath(file.getParent());
-                pcap.setFileSize((file.length()/(1024f*1024f)));
+                pcap.setFileSize((file.length() / (1024f * 1024f)));
                 pcap.setSha1Value(PcapManageUtil.getFileSha1(file));
                 pcap.setIsHandled("未处理");
                 model.addAttribute("res", iPcapManageService.insertPcap(pcap));
             }
         }
-        return null;
+        return "pcap_manage";
     }
 
 }

@@ -11,7 +11,7 @@ public interface IPcapManageService {
 
     public ServerResponse deletePcapById(Integer id);
 
-    public ServerResponse insertPcap(Pcap pcap);
+    public ServerResponse<List<Pcap>> insertPcap(Pcap pcap);
 
     public Pcap selectBySha1Value(String sha1Value);
 

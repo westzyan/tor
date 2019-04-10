@@ -10,7 +10,7 @@ import java.util.List;
 
 public class PcapManageUtil {
 
-    public List<Pcap> lookAllPcap(){
+    public List<Pcap> lookAllPcap() {
         File file = new File("/home/ubuntu2/AW/Bridge/20190320/tor.pcap");
         System.out.println(file.getName());
 
@@ -26,7 +26,7 @@ public class PcapManageUtil {
         byte buffer[] = new byte[8192];
         int len;
         try {
-            digest =MessageDigest.getInstance("SHA-1");
+            digest = MessageDigest.getInstance("SHA-1");
             in = new FileInputStream(file);
             while ((len = in.read(buffer)) != -1) {
                 digest.update(buffer, 0, len);

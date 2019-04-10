@@ -1,6 +1,8 @@
 package com.tor.util;
 
 
+import cic.cs.unb.ca.ifm.CICFlowMeter;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.math.BigInteger;
@@ -17,7 +19,7 @@ public class Test {
         byte buffer[] = new byte[8192];
         int len;
         try {
-            digest =MessageDigest.getInstance("SHA-1");
+            digest = MessageDigest.getInstance("SHA-1");
             in = new FileInputStream(file);
             while ((len = in.read(buffer)) != -1) {
                 digest.update(buffer, 0, len);
@@ -36,7 +38,7 @@ public class Test {
         }
     }
 
-    public static void main(String[] args){
+    public static void main(String[] args) {
         File file = new File("/home/ubuntu2/AW/Bridge/torPcap/20190320/tor.pcap");
 
         System.out.println(getFileSha1(file));
@@ -44,6 +46,7 @@ public class Test {
         File file2 = new File("/home/ubuntu2/AW/Bridge/torPcap/20190320/tor1.pcap");
 
         System.out.println(getFileSha1(file2));
+        CICFlowMeter cicFlowMeter = new CICFlowMeter();
     }
 
 }

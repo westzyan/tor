@@ -6,10 +6,7 @@ import com.tor.pojo.Traffic;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 
 //获取初步的client hello 报文
@@ -93,7 +90,7 @@ public class Identification {
      */
     public boolean idenClientHello(Traffic traffic) {
         boolean flag = true;
-        System.out.println(traffic.getServerName());
+//        System.out.println(traffic.getServerName());
         // System.out.println("panduanclient");
         if (traffic.getServerNameLength() < 16) {
             // System.out.println("panduanclient length bufuhe");
@@ -139,7 +136,7 @@ public class Identification {
             long hour = (l / (60 * 60 * 1000) - day * 24);
             long min = ((l / (60 * 1000)) - day * 24 * 60 - hour * 60);
             long s = (l / 1000 - day * 24 * 60 * 60 - hour * 60 * 60 - min * 60);
-            System.out.println("" + day + "天" + hour + "小时" + min + "分" + s + "秒");
+//            System.out.println("" + day + "天" + hour + "小时" + min + "分" + s + "秒");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -162,11 +159,11 @@ public class Identification {
             // 18-02-28 00:00:00 (UTC),19-01-01 23:59:59 (UTC)
             // 处理时间
             String substr0 = str[0].substring(0, 17);
-            System.out.println("substr0" + substr0);
+//            System.out.println("substr0" + substr0);
             String substr1 = str[1].substring(0, 17);
-            System.out.println("substr1" + substr1);
+//            System.out.println("substr1" + substr1);
             long timeDifference = Identification.getTimeDifference(substr1, substr0) / 1000;
-            System.out.println("longtime" + timeDifference);
+//            System.out.println("longtime" + timeDifference);
             // tor 证书失效时间最少2个小时，即7200s,最长失效时间10个月，初步定为26784000s
             if (timeDifference < 7200 || timeDifference > 26784000) {
                 flag = false;
@@ -190,30 +187,30 @@ public class Identification {
         boolean flag = true;
         Identification iden = new Identification();
         if (traffic.getSubjectAndIssuer().length() < 33 || traffic.getSubjectAndIssuer().length() > 57) {
-            System.out.println(traffic.getSubjectAndIssuer());
+//            System.out.println(traffic.getSubjectAndIssuer());
             flag = false;
             return flag;
         } else {
             String str[] = traffic.getSubjectAndIssuer().split(",");
-            System.out.println(str[0]);
-            System.out.println(str[1]);
+//            System.out.println(str[0]);
+//            System.out.println(str[1]);
             if (str.length != 2) {
-                System.out.println("strlength" + str.length);
+//                System.out.println("strlength" + str.length);
                 flag = false;
                 return flag;
             } else {
-                System.out.println("ssssssss");
+//                System.out.println("ssssssss");
                 for (int i = 0; i < str.length; i++) {
                     if (iden.idenServerNameOrSubject(str[i]) == false) {
                         flag = false;
-                        System.out.println("servername  jia" + i);
+//                        System.out.println("servername  jia" + i);
                         return flag;
                     }
                 }
                 if (flag == true) {
-                    System.out.println("zuihou");
+//                    System.out.println("zuihou");
                     flag = iden.idenCertificationTime(traffic.getBeforeAndAfter());
-                    System.out.println("time" + flag);
+//                    System.out.println("time" + flag);
                 }
             }
         }
@@ -239,7 +236,7 @@ public class Identification {
                     || (traffic.getDestinationIP().equals(src) && traffic.getDestinationPort() == srcport
                     && traffic.getSourceIP().equals(dst) && traffic.getSourcePort() == dstport))) {
                 traffic.setTor(result);
-                System.out.println("id:" + traffic.getId() + traffic.getTor());
+//                System.out.println("id:" + traffic.getId() + traffic.getTor());
             }
         }
         return list;
@@ -325,7 +322,7 @@ public class Identification {
                 + "-e ssl.handshake.random_bytes -e ssl.handshake.cipher_suites_length "
                 + "-e ssl.handshake.ciphersuite -e ssl.handshake.extensions_server_name_len "
                 + "-e ssl.handshake.extensions_server_name -e x509sat.uTF8String -e x509af.utcTime";
-        System.out.println("commandStr:   " + commandStr);
+//        System.out.println("commandStr:   " + commandStr);
         // String commandStr = "sudo tshark -r /home/ubuntu2/AW/pcap/ftp.pcapng "
         // + "-T fields -e ip.src -e tcp.srcport -e udp.srcport -e ip.dst -e tcp.dstport
         // -e udp.dstport -e ip.proto "
@@ -335,14 +332,14 @@ public class Identification {
         // x509af.utcTime";
         List<Traffic> list = new GetTrafficList().exeCmd(commandStr); // 获取所有流量
         if (list == null || list.size() == 0) {
-            System.out.println("没有读取到流量");
+//            System.out.println("没有读取到流量");
             return ServerResponse.createByErrorMessage("没有读取到流量,可能为非pcap文件");
         }
         Identification iden = new Identification();
         List<Traffic> clientList = iden.getClientHello(list);// 获取client hello报文
 
         if (clientList == null) {// 若没有此流量则无法判断
-            System.out.println("没有找到client hello流量");
+//            System.out.println("没有找到client hello流量");
             //待处理
 
             return ServerResponse.createByErrorMessage("没有找到client hello流量");
@@ -352,24 +349,24 @@ public class Identification {
             if (iden.idenClientHello(clientTraffic) == true) {
                 serverHello = iden.getServerHelloAndCertification(clientTraffic, list);
 
-                System.out.println("yisitor  clientid:" + clientTraffic.getId() + "   sourceip:"
-                        + clientTraffic.getSourceIP() + "  cipher:" + clientTraffic.getCipherSuite() + "test");
+//                System.out.println("yisitor  clientid:" + clientTraffic.getId() + "   sourceip:"
+//                        + clientTraffic.getSourceIP() + "  cipher:" + clientTraffic.getCipherSuite() + "test");
                 if (serverHello != null) {
-                    System.out.println("serverid:" + serverHello.getId() + "   sourceip:" + serverHello.getSourceIP()
-                            + "  cipher:" + serverHello.getCipherSuite() + "test");
+//                    System.out.println("serverid:" + serverHello.getId() + "   sourceip:" + serverHello.getSourceIP()
+//                            + "  cipher:" + serverHello.getCipherSuite() + "test");
                     if (new Identification().idenServerHello(serverHello) == true) {
                         clientTraffic.setTor("yes");
-                        System.out.println("id:" + clientTraffic.getId() + "yes");
+//                        System.out.println("id:" + clientTraffic.getId() + "yes");
                         serverHello.setTor("yes");
-                        System.out.println("id:" + serverHello.getId() + "yes");
+//                        System.out.println("id:" + serverHello.getId() + "yes");
                         iden.setApplication(clientTraffic, list, "YES");
                     } else {
                         serverHello.setTor("NO");
                         iden.setApplication(clientTraffic, list, "NO");
-                        System.out.println("id:" + serverHello.getId() + "no");
+//                        System.out.println("id:" + serverHello.getId() + "no");
                     }
                 } else {
-                    System.out.println("id:" + clientTraffic.getId() + "未找到其对应的serverhello报文");
+//                    System.out.println("id:" + clientTraffic.getId() + "未找到其对应的serverhello报文");
                     iden.setApplication(clientTraffic, list, "未找到该流的server hello报文，可疑");
                 }
 
@@ -382,35 +379,83 @@ public class Identification {
 
         }
         list = iden.setSuspiciousTraffic(list);
+        List<Traffic> flowTraffic = trafficToFlow(list);
+
         if (list != null && list.size() > 0) {
             CSVUtil.writeCsv(iden.getNewFilePath(filepath), list);
+        }
+        if (flowTraffic != null && flowTraffic.size() > 0) {
+            CSVUtil.writeCsv(iden.getNewFilePath(filepath+"/flow"), flowTraffic);
         }
 
         return ServerResponse.createBySuccess(list);
 
     }
-    public List<Traffic> trafficToFlow(List<Traffic> trafficList){
+
+    //流量序列转换为流信息，五元组信息和lable等标签
+    //暂时有问题 1088流 测试只有1048流
+    public static List<Traffic> trafficToFlow(List<Traffic> trafficList) {
         List<Traffic> list = new ArrayList<Traffic>();
-        for(Iterator iterator = list.iterator(); iterator.hasNext();){
-            Traffic traffic = (Traffic) iterator.next();
-            if(list.contains(traffic))
-            list.add(traffic);
+        int[] flag = new int[trafficList.size()];
+        for(int i=0;i<flag.length;i++){
+            flag[i] = 0;
         }
-        return null;
+
+        for(int i = 0; i < trafficList.size(); i++){
+//            System.out.println("iiiii-------------"+i);
+            for(int j = i+1; j <trafficList.size(); j++){
+                if(flag[j] == 1){
+
+                }else if(trafficList.get(i).getSourceIP().endsWith(trafficList.get(j).getDestinationIP())
+                        && trafficList.get(i).getDestinationIP().equals(trafficList.get(j).getSourceIP())
+                        && trafficList.get(i).getSourcePort() == trafficList.get(j).getDestinationPort()
+                        && trafficList.get(i).getDestinationPort() == trafficList.get(j).getSourcePort()
+                        && trafficList.get(i).getProtocol() == trafficList.get(j).getProtocol()
+                ){
+                    flag[j] = 1;
+                }else if(trafficList.get(i).getSourceIP().equals(trafficList.get(j).getSourceIP())
+                            && trafficList.get(i).getDestinationIP().equals(trafficList.get(j).getDestinationIP())
+                            && trafficList.get(i).getSourcePort() == trafficList.get(j).getSourcePort()
+                            && trafficList.get(i).getDestinationPort() == trafficList.get(j).getDestinationPort()
+                            && trafficList.get(i).getProtocol() == trafficList.get(j).getProtocol()
+                ){
+                        flag[j] = 1;
+                }else {
+                    flag[j] = 0;
+                }
+//                System.out.println("jjjjj-------------"+j);
+//                System.out.println(trafficList.get(i).getSourceIP()+"-----"+trafficList.get(j).getSourceIP());
+//                System.out.println(trafficList.get(i).getDestinationIP()+"-----"+trafficList.get(j).getDestinationIP());
+//                System.out.println(trafficList.get(i).getSourcePort()+"-----"+trafficList.get(j).getSourcePort());
+//                System.out.println(trafficList.get(i).getDestinationPort()+"-----"+trafficList.get(j).getDestinationPort());
+            }
+        }
+        for(int i=0;i<flag.length;i++){
+            if (flag[i] == 0){
+                list.add(trafficList.get(i));
+            }
+        }
+        return list;
     }
 
     public static void main(String[] args) {
         // System.out.println(new Date());
         // // DBhelp dbhelp = new DBhelp();
-        // String commandStr = "sudo tshark -r /home/ubuntu2/AW/pcap/video.pcapng "
-        // + "-T fields -e ip.src -e tcp.srcport -e udp.srcport -e ip.dst -e tcp.dstport
-        // -e udp.dstport -e ip.proto "
-        // + "-e ssl.handshake.random_bytes -e ssl.handshake.cipher_suites_length "
-        // + "-e ssl.handshake.ciphersuite -e ssl.handshake.extensions_server_name_len "
-        // + "-e ssl.handshake.extensions_server_name -e x509sat.uTF8String -e
-        // x509af.utcTime";
-        // // List<Traffic> list = dbhelp.getAllTraffic(); //获取所有流量
-        // List<Traffic> list = new GetTrafficList().exeCmd(commandStr); // 获取所有流量
+         String commandStr = "sudo tshark -r /home/ubuntu2/AW/Bridge/torPcap/20190313/tor.pcap "
+         + "-T fields -e ip.src -e tcp.srcport -e udp.srcport -e ip.dst -e tcp.dstport -e udp.dstport -e ip.proto "
+         + "-e ssl.handshake.random_bytes -e ssl.handshake.cipher_suites_length "
+         + "-e ssl.handshake.ciphersuite -e ssl.handshake.extensions_server_name_len "
+         + "-e ssl.handshake.extensions_server_name -e x509sat.uTF8String -e x509af.utcTime";
+         // List<Traffic> list = dbhelp.getAllTraffic(); //获取所有流量
+         List<Traffic> list = new GetTrafficList().exeCmd(commandStr); // 获取所有流量
+        System.out.println("list.size"+list.size());
+        List<Traffic> testList = new Identification().trafficToFlow(list);
+        System.out.println("testlist.size"+testList.size());
+        for (int i = 0; i < testList.size(); i++){
+            System.out.println("i = "+i +"------src:"+testList.get(i).getSourceIP()+"srcPort:"+testList.get(i).getSourcePort()
+            +"dest:"+testList.get(i).getDestinationIP()+"destPort"+testList.get(i).getDestinationPort()+"portocal:"+testList.get(i).getProtocol());
+        }
+
         // if (list == null) {
         // System.out.println("没有读取到流量");
         // return;
@@ -490,25 +535,25 @@ public class Identification {
         // hello.setSubjectAndIssuer("www.6j6itcjorsh.com,www.pad3uygc3r5y.net");
         // hello.setBeforeAndAfter("18-06-30 00:00:00 (UTC),19-01-19 00:00:00 (UTC)");
 
-        hello.setId(2194);
-        hello.setSourceIP("192.168.1.197");
-        hello.setSourcePort(5555);
-        hello.setDestinationIP("192.168.1.100");
-        hello.setDestinationPort(56382);
-        hello.setProtocol(6);
-        hello.setRandomBytes("f4:63:49:a2:ee:e7:5e:74:a8:30:0a:34:7c:9a:f5:e6:d4:79:17:53:42:6f:b4:a0:28:cc:20:44");
-        hello.setCipherSuitesLength(30);
-        hello.setCipherSuite("49195,49199,52393,52392,49196,49200,49162,49161,49171,49172,51,57,47,53,255");
-        hello.setServerNameLength(31);
-        hello.setServerName("www.nfngjtcjvqi6afrdffdqj5r.com");
-        // hello.setSubjectAndIssuer("www.nfngjtcjvqi6afrdffdqj5r.com");
-        // hello.setBeforeAndAfter("18-06-30 00:00:00 (UTC),19-01-19 00:00:00 (UTC)");
-
-        // boolean f = iden.idenServerHello(hello);
-        boolean f = iden.idenClientHello(hello);
-        System.out.println(f);
-        System.out.println(iden.getNewFilePath("/home/ubuntu2/AW/pcap/video.pcapng"));
-        System.out.println(new Date());
+//        hello.setId(2194);
+//        hello.setSourceIP("192.168.1.197");
+//        hello.setSourcePort(5555);
+//        hello.setDestinationIP("192.168.1.100");
+//        hello.setDestinationPort(56382);
+//        hello.setProtocol(6);
+//        hello.setRandomBytes("f4:63:49:a2:ee:e7:5e:74:a8:30:0a:34:7c:9a:f5:e6:d4:79:17:53:42:6f:b4:a0:28:cc:20:44");
+//        hello.setCipherSuitesLength(30);
+//        hello.setCipherSuite("49195,49199,52393,52392,49196,49200,49162,49161,49171,49172,51,57,47,53,255");
+//        hello.setServerNameLength(31);
+//        hello.setServerName("www.nfngjtcjvqi6afrdffdqj5r.com");
+//        // hello.setSubjectAndIssuer("www.nfngjtcjvqi6afrdffdqj5r.com");
+//        // hello.setBeforeAndAfter("18-06-30 00:00:00 (UTC),19-01-19 00:00:00 (UTC)");
+//
+//        // boolean f = iden.idenServerHello(hello);
+//        boolean f = iden.idenClientHello(hello);
+//        System.out.println(f);
+//        System.out.println(iden.getNewFilePath("/home/ubuntu2/AW/pcap/video.pcapng"));
+//        System.out.println(new Date());
     }
 
 }
