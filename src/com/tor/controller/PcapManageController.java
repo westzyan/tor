@@ -7,9 +7,11 @@ import com.tor.util.PcapManageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.util.List;
 
@@ -87,5 +89,90 @@ public class PcapManageController {
         }
         return "pcap_manage";
     }
+
+
+    //加载本机网卡名称
+    @RequestMapping("/pcap/load_NIC")
+    public String loadNIC(HttpSession session, Model model) {
+//        return iPcapManageService.getAllPcap();
+//        System.out.println(iPcapManageService.getAllPcap().getData().size());
+//        System.out.println("/pcap/list-------------------");
+        try {
+            model.addAttribute("nic", PcapManageUtil.loadNIC());
+            session.setAttribute("nic", PcapManageUtil.loadNIC());
+            System.out.println(PcapManageUtil.loadNIC().get(0));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "pcap_capture";
+    }
+
+    //生成捕获数据包命令
+    //暂时将过滤规则简化
+    @RequestMapping("/pcap/capture")
+    public String capturePcap(Model model ,String nicName, String count, String host, String src, String dst,String port,
+                              String srcPort,String dstPort, String protocol, String fileName) {
+        StringBuffer stringBuffer = new StringBuffer("tcpdump命令：");
+        if(StringUtils.isEmpty(nicName)){
+            stringBuffer.append("网卡地址为空，请选择网卡地址");
+        }else if(StringUtils.isEmpty(count)){
+            stringBuffer.append("网络数据包数目为空，请填入数据包数目");
+        }else if(StringUtils.isEmpty(fileName)){
+            stringBuffer.append("文件名为空");
+        }else {
+            if(!StringUtils.isEmpty(host)){
+                if (!StringUtils.isEmpty(port)){
+                    if (!StringUtils.isEmpty(protocol)){
+                        stringBuffer.append("tcpdump -i "+ nicName + " -s 0 -c " + count + " '((" + protocol + ") and (" + "(port" + port + ") and (host "+ host + "))'" + " -w "+fileName +"<br>请复制命令运行");
+//                        msg = msg + "tcpdump -i "+ nicName + " -s 0 -c " + count + " '((" + protocol + ") and (" + "(port" + port + ") and (host "+ host + "))'" + " -w "+fileName +"<br>请复制命令运行";
+                    }else {
+                        stringBuffer.append("tcpdump -i "+ nicName + " -s 0 -c " + count + " '((host" + host + ") and (port "+ port + "))'" + " -w "+fileName+"<br>请复制命令运行");
+//                        msg = msg + "tcpdump -i "+ nicName + " -s 0 -c " + count + " '((host" + host + ") and (port "+ port + "))'" + " -w "+fileName+"<br>请复制命令运行";
+                    }
+                }else {
+                    if (!StringUtils.isEmpty(protocol)){
+                        stringBuffer.append("tcpdump -i "+ nicName + " -s 0 -c " + count + " '((" + protocol + ") and (host "+ host + "))'" + " -w "+fileName+"<br>请复制命令运行");
+//                        msg = msg + "tcpdump -i "+ nicName + " -s 0 -c " + count + " '((" + protocol + ") and (host "+ host + "))'" + " -w "+fileName+"<br>请复制命令运行";
+                    }else {
+                        stringBuffer.append("tcpdump -i "+ nicName + " -s 0 -c " + count + " '(host "+ host + "'" + " -w "+fileName+"<br>请复制命令运行");
+//                        msg = msg + "tcpdump -i "+ nicName + " -s 0 -c " + count + " '(host "+ host + "'" + " -w "+fileName+"<br>请复制命令运行";
+                    }
+                }
+            }else {
+                if (!StringUtils.isEmpty(port)){
+                    if (!StringUtils.isEmpty(protocol)){
+                        stringBuffer.append("tcpdump -i "+ nicName + " -s 0 -c " + count + " '((" + protocol + ") and (" + "(port" + port + "))'" + " -w "+fileName +"<br>请复制命令运行");
+//                        msg = msg + "tcpdump -i "+ nicName + " -s 0 -c " + count + " '((" + protocol + ") and (" + "(port" + port + ") and (host "+ host + "))'" + " -w "+fileName +"<br>请复制命令运行";
+                    }else {
+                        stringBuffer.append("tcpdump -i "+ nicName + " -s 0 -c " + count + " port "+ port + " -w "+fileName+"<br>请复制命令运行");
+//                        msg = msg + "tcpdump -i "+ nicName + " -s 0 -c " + count + " '((host" + host + ") and (port "+ port + "))'" + " -w "+fileName+"<br>请复制命令运行";
+                    }
+                }else {
+                    if (!StringUtils.isEmpty(protocol)){
+                        stringBuffer.append("tcpdump -i "+ nicName + " -s 0 -c " + count +  protocol +  " -w "+fileName+"<br>请复制命令运行");
+//                        msg = msg + "tcpdump -i "+ nicName + " -s 0 -c " + count + " '((" + protocol + ") and (host "+ host + "))'" + " -w "+fileName+"<br>请复制命令运行";
+                    }else {
+                        stringBuffer.append("tcpdump -i "+ nicName + " -s 0 -c " + count + " -w "+fileName+"<br>请复制命令运行");
+//                        msg = msg + "tcpdump -i "+ nicName + " -s 0 -c " + count + " '(host "+ host + "'" + " -w "+fileName+"<br>请复制命令运行";
+                    }
+                }
+            }
+
+        }
+
+        System.out.println(stringBuffer.toString());
+
+        model.addAttribute("msg", stringBuffer.toString());
+
+        return "pcap_capture";
+    }
+
+    //进入捕获界面
+    @RequestMapping("/pcap/goto_capture")
+    public String captureIndex(Model model) {
+        model.addAttribute("nic",null);
+        return "pcap_capture";
+    }
+
 
 }

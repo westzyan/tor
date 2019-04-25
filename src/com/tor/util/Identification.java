@@ -385,7 +385,7 @@ public class Identification {
             CSVUtil.writeCsv(iden.getNewFilePath(filepath), list);
         }
         if (flowTraffic != null && flowTraffic.size() > 0) {
-            CSVUtil.writeCsv(iden.getNewFilePath(filepath+"/flow"), flowTraffic);
+            CSVUtil.writeCsv(iden.getNewFilePath(filepath+"flow"), flowTraffic);
         }
 
         return ServerResponse.createBySuccess(list);
@@ -447,7 +447,7 @@ public class Identification {
          + "-e ssl.handshake.ciphersuite -e ssl.handshake.extensions_server_name_len "
          + "-e ssl.handshake.extensions_server_name -e x509sat.uTF8String -e x509af.utcTime";
          // List<Traffic> list = dbhelp.getAllTraffic(); //获取所有流量
-         List<Traffic> list = new GetTrafficList().exeCmd(commandStr); // 获取所有流量
+        List<Traffic> list = new GetTrafficList().exeCmd(commandStr); // 获取所有流量
         System.out.println("list.size"+list.size());
         List<Traffic> testList = new Identification().trafficToFlow(list);
         System.out.println("testlist.size"+testList.size());
@@ -455,6 +455,8 @@ public class Identification {
             System.out.println("i = "+i +"------src:"+testList.get(i).getSourceIP()+"srcPort:"+testList.get(i).getSourcePort()
             +"dest:"+testList.get(i).getDestinationIP()+"destPort"+testList.get(i).getDestinationPort()+"portocal:"+testList.get(i).getProtocol());
         }
+
+        CSVUtil.writeCsv("/home/ubuntu2/hehe", testList);
 
         // if (list == null) {
         // System.out.println("没有读取到流量");

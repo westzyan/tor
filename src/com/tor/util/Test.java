@@ -1,52 +1,33 @@
 package com.tor.util;
 
-
-import cic.cs.unb.ca.ifm.CICFlowMeter;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.math.BigInteger;
+import java.net.Inet4Address;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
 import java.security.MessageDigest;
+import java.util.Enumeration;
 
 public class Test {
 
-    public static String getFileSha1(File file) {
-        if (!file.isFile()) {
-            return null;
-        }
-        MessageDigest digest = null;
-        FileInputStream in = null;
-        byte buffer[] = new byte[8192];
-        int len;
-        try {
-            digest = MessageDigest.getInstance("SHA-1");
-            in = new FileInputStream(file);
-            while ((len = in.read(buffer)) != -1) {
-                digest.update(buffer, 0, len);
-            }
-            BigInteger bigInt = new BigInteger(1, digest.digest());
-            return bigInt.toString(16);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        } finally {
-            try {
-                in.close();
-            } catch (Exception e) {
-                e.printStackTrace();
+
+    public static void main(String[] args) throws Exception{
+// 获得本机的所有网络接口
+        Enumeration<NetworkInterface> nifs = NetworkInterface.getNetworkInterfaces();
+        while (nifs.hasMoreElements()) {
+            NetworkInterface nif = nifs.nextElement();
+            // 获得与该网络接口绑定的 IP 地址，一般只有一个
+            Enumeration<InetAddress> addresses = nif.getInetAddresses();
+            while (addresses.hasMoreElements()) {
+                InetAddress addr = addresses.nextElement();
+                if (addr instanceof Inet4Address) { // 只关心 IPv4 地址
+                    System.out.println("网卡接口名称：" + nif.getName());
+                    System.out.println("网卡接口地址：" + addr.getHostAddress());
+                    System.out.println();
+                }
             }
         }
-    }
-
-    public static void main(String[] args) {
-        File file = new File("/home/ubuntu2/AW/Bridge/torPcap/20190320/tor.pcap");
-
-        System.out.println(getFileSha1(file));
-
-        File file2 = new File("/home/ubuntu2/AW/Bridge/torPcap/20190320/tor1.pcap");
-
-        System.out.println(getFileSha1(file2));
-        CICFlowMeter cicFlowMeter = new CICFlowMeter();
     }
 
 }

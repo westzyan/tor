@@ -45,7 +45,7 @@
 
         <tbody>
         <tr>
-            <th>ID</th>
+            <%--<th>ID</th>--%>
             <th>流量包ID</th>
             <th>流量包名</th>
             <th>绝对路径</th>
@@ -59,8 +59,8 @@
         <c:if test="${res.data != null}">
             <c:forEach items="${res.data}" var="pcap">
             <tr>
-                <td style="text-align:left; padding-left:20px;"><input type="checkbox" name="id[]" value="${pcap.id}">1</td>
-                <td>${pcap.id}</td>
+                <td style="text-align:left; padding-left:20px;"><input type="checkbox" name="id[]" value="${pcap.id}">${pcap.id}</td>
+                <%--<td>${pcap.id}</td>--%>
                 <td><font color="#00CC99">${pcap.fileName}</font></td>
                 <td>${pcap.filePath}</td>
                 <td>${pcap.fileSize}M</td>
