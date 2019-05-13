@@ -8,15 +8,18 @@ import weka.core.converters.ConverterUtils.DataSource;
 import weka.core.*;
 import weka.classifiers.meta.*;
 import weka.classifiers.trees.*;
+
 import java.util.*;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+
 import jxl.*;
 import jxl.write.Label;
 import jxl.write.WritableSheet;
 import jxl.write.WritableWorkbook;
 import jxl.write.WriteException;
+
 public class ClassifyUtil {
     /*
      * 特征选择算法
@@ -252,7 +255,7 @@ public class ClassifyUtil {
 
     }
 
-    public ServerResponse<List<Flow>> getClassifyList(String filePath, String feature, String algorathm){
+    public ServerResponse<List<Flow>> getClassifyList(String trainFilePath,String testFilePath, String feature, String algorathm) {
         return null;
     }
 

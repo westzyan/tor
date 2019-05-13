@@ -26,25 +26,34 @@
             </a>
         </div>
         <div class="nav-tit">
-            <a href="#" target="main"> <img
+            <a href="/pcap/list" target="main"> <img
+                    src="images/job-msg.png" alt=""> <span>数据包管理模块</span>
+            </a>
+        </div>
+        <div class="nav-tit">
+            <a href="/pcap/goto_capture" target="main"> <img
                     src="images/job-msg.png" alt=""> <span>数据包捕获模块</span>
             </a>
         </div>
+        <div class="personal-list" id="pcap_child">
+            <ul>
+                <li><a href="/pcap/list" target="main">数据包查看</a></li>
+                <li><a href="" target="main">导入数据包</a></li>
+            </ul>
+        </div>
         <div class="nav-tit" id="personal">
-            <a href="#" target="main"> <img
+            <a href="" target="main"> <img
                     src="images/PubMed-msg.png" alt=""> <span>数据包转换模块数据集生成模块</span>
             </a>
         </div>
         <div class="personal-list" id="personal_child">
             <ul>
-                <li><a href="FamilyInformation.html" target="main">学生基本信息</a></li>
-                <li><a href="TeacherEmInformation.html" target="main">就业学生信息</a></li>
-                <li><a href="Teacherinvestigation.html" target="main">就业信息调查</a></li>
-                <li><a href="TeacherPubMed.html" target="main">考研学生信息</a></li>
+                <li><a href="/pcap/list" target="main">数据包查看</a></li>
+                <li><a href="" target="main">导入数据包</a></li>
             </ul>
         </div>
         <div class="nav-tit">
-            <a href="#" target="main"> <img
+            <a href="" target="main"> <img
                     src="images/modify-password.png" alt=""> <span>流特征统计模块</span>
             </a>
         </div>
@@ -54,12 +63,12 @@
             </a>
         </div>
         <div class="nav-tit">
-            <a href="#" target="main"> <img
+            <a href="" target="main"> <img
                     src="images/soso-white.png" alt=""> <span>节点主动探测模块</span>
             </a>
         </div>
         <div class="nav-tit">
-            <a href="#" target="main"> <img
+            <a href="" target="main"> <img
                     src="images/soso-white.png" alt=""> <span>Tor流量跟踪与探测模块</span>
             </a>
         </div>
@@ -74,7 +83,7 @@
             $('#personal').on('click', function () {
                 $('#personal_child').fadeToggle(300);
             });
-            let aLi = $('#personal_child li');
+            var aLi = $('#personal_child li');
             aLi.on('click', function () {
                 $(this).addClass('active').siblings('li').removeClass(
                     'active');

@@ -147,5 +147,21 @@ public class Traffic {
         super();
     }
 
+    public Traffic(int id, String sourceIP, int sourcePort, String destinationIP, int destinationPort, int protocol, String randomBytes, int cipherSuitesLength, String cipherSuite, int serverNameLength, String serverName, String subjectAndIssuer, String beforeAndAfter, String tor) {
+        this.id = id;
+        this.sourceIP = sourceIP;
+        this.sourcePort = sourcePort;
+        this.destinationIP = destinationIP;
+        this.destinationPort = destinationPort;
+        this.protocol = protocol;
+        this.randomBytes = randomBytes;
+        this.cipherSuitesLength = cipherSuitesLength;
+        this.cipherSuite = cipherSuite;
+        this.serverNameLength = serverNameLength;
+        this.serverName = serverName;
+        this.subjectAndIssuer = subjectAndIssuer;
+        this.beforeAndAfter = beforeAndAfter;
+        this.tor = tor;
+    }
 
 }

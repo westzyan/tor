@@ -42,11 +42,11 @@ public class GetTrafficList {
             }
         }
 
-        System.out.println(allStr);
+//        System.out.println(allStr);
         String splitTraffic[] = allStr.split("\t");
-        for (int i = 0; i < splitTraffic.length; i++) {
-            System.out.println(splitTraffic[i]);
-        }
+//        for (int i = 0; i < splitTraffic.length; i++) {
+//            System.out.println(splitTraffic[i]);
+//        }
         return splitTraffic;
     }
 
@@ -66,7 +66,7 @@ public class GetTrafficList {
             br = new BufferedReader(new InputStreamReader(p.getInputStream()));
             String line = null;
             while ((line = br.readLine()) != null) {
-                System.out.println(line);
+//                System.out.println(line);
                 String[] a = new GetTrafficList().trafficStringHandle(line);
                 Traffic traffic = new Traffic();
                 traffic.setId(count);
@@ -121,7 +121,7 @@ public class GetTrafficList {
                 }
             }
         }
-        System.out.println("listsize = " + list.size());
+//        System.out.println("listsize = " + list.size());
         return list;
     }
 

@@ -27,9 +27,9 @@ public class SecondIdentityController {
 
 
     @RequestMapping(value = "/second/identity")
-    public String identity(HttpSession session, Model model, String filePath, String feature, String algorathm) {
+    public String identity(HttpSession session, Model model, String trainFilePath,String testFilePath, String feature, String algorathm) {
 
-        if (StringUtils.isEmpty(filePath)) {
+        if (StringUtils.isEmpty(trainFilePath)||StringUtils.isEmpty(testFilePath)) {
             ServerResponse response = ServerResponse.createByErrorMessage("文件路径为空");
             session.setAttribute("list", null);
             model.addAttribute("res", response);
@@ -40,12 +40,12 @@ public class SecondIdentityController {
         } else {
 
             //ServerResponse<List<Traffic>> response = iFirstIdentityService.getIdentityList(filePath);
-            ServerResponse<PageBean> response = iSecondIdentityService.getClassifyList(filePath, feature, algorathm);
-            List<Flow> flowList = iSecondIdentityService.getAllList(filePath, feature, algorathm);
+            ServerResponse<PageBean> response = iSecondIdentityService.getClassifyList(trainFilePath, testFilePath, feature, algorathm);
+            List<Flow> flowList = iSecondIdentityService.getAllList(trainFilePath, testFilePath, feature, algorathm);
             session.setAttribute("list", flowList);
             model.addAttribute("res", response);
         }
-        return"second_identity";
+        return "second_identity";
     }
 
 

@@ -13,30 +13,31 @@ import java.util.List;
 @Service("iSecondIdentityService")
 public class SecondIdentityServiceImpl implements ISecondIdentityService {
 
-    public ServerResponse<PageBean> getClassifyList(String filePath, String feature, String algorithm){
+    public ServerResponse<PageBean> getClassifyList(String trainFilePath,String testFilePath, String feature, String algorithm) {
         ClassifyUtil classifyUtil = new ClassifyUtil();
-        ServerResponse<List<Flow>> serverResponse = classifyUtil.getClassifyList(filePath, feature, algorithm);
+        ServerResponse<List<Flow>> serverResponse = classifyUtil.getClassifyList(trainFilePath, testFilePath,feature, algorithm);
         List<Flow> flowList = serverResponse.getData();
         int status = serverResponse.getStatus();
         String msg = serverResponse.getMsg();
-        if(status == 0){
+        if (status == 0) {
             return this.queryForPage(20, 1, flowList);
-        }else {
+        } else {
             return ServerResponse.createByErrorMessage(msg);
         }
     }
 
-    public List<Flow> getAllList(String filePath, String feature, String algorithm){
+    public List<Flow> getAllList(String trainFilePath,String testFilePath, String feature, String algorithm) {
         ClassifyUtil classifyUtil = new ClassifyUtil();
-        ServerResponse<List<Flow>> serverResponse = classifyUtil.getClassifyList(filePath, feature, algorithm);
+        ServerResponse<List<Flow>> serverResponse = classifyUtil.getClassifyList(trainFilePath,testFilePath, feature, algorithm);
         List<Flow> flowList = serverResponse.getData();
         return flowList;
     }
+
     /**
      * 分页查询
      *
-     * @param pageSize    每页显示多少记录
-     * @param page        当前页
+     * @param pageSize 每页显示多少记录
+     * @param page     当前页
      * @param flowList 流List
      * @return 封装了分页信息的bean
      */

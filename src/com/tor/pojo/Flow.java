@@ -18,8 +18,25 @@ public class Flow {
     private String lable;
 
 
-    public Flow(){
+    public Flow() {
 
+    }
+
+    public Flow(String flowID, String srcIP, String srcPort, String dstPort, String dstIP, String protocol, String timestamp, String flowDuration, String totFwdPkts, String totalFiatNumeric, String totalBiatNumeric, String minFiatNumeric, String minBiatNumeric, String lable) {
+        this.flowID = flowID;
+        this.srcIP = srcIP;
+        this.srcPort = srcPort;
+        this.dstPort = dstPort;
+        this.dstIP = dstIP;
+        this.protocol = protocol;
+        this.timestamp = timestamp;
+        this.flowDuration = flowDuration;
+        this.totFwdPkts = totFwdPkts;
+        this.totalFiatNumeric = totalFiatNumeric;
+        this.totalBiatNumeric = totalBiatNumeric;
+        this.minFiatNumeric = minFiatNumeric;
+        this.minBiatNumeric = minBiatNumeric;
+        this.lable = lable;
     }
 
     public String getFlowID() {

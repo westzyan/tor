@@ -22,23 +22,20 @@ public class FirstIdentityServiceImpl implements IFirstIdentityService {
         int status = serverResponse.getStatus();
         String msg = serverResponse.getMsg();
 
-        if(status == 0){
+        if (status == 0) {
             return this.queryForPage(20, 1, trafficList);
-        }else {
+        } else {
             return ServerResponse.createByErrorMessage(msg);
         }
     }
 
-    public List<Traffic> getAllList(String filePath){
+    public List<Traffic> getAllList(String filePath) {
         Identification identification = new Identification();
         ServerResponse<List<Traffic>> serverResponse = identification.getLastTrafficList(filePath);
         List<Traffic> trafficList = serverResponse.getData();
 
         return trafficList;
     }
-
-
-
 
 
     /**
