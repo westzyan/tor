@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+    <!--基础包扫描-->
+    <context:component-scan base-package="com.tor.service"/>
+
+    <!--引入资源文件-->
+    <context:property-placeholder location="classpath:db.properties"/>
+
+    <!--数据源-->
+    <bean class="org.springframework.jdbc.datasource.DriverManagerDataSource" id="dataSource">
+        <property name="driverClassName" value="${db.driverClassName}"/>
+        <property name="url" value="${db.url}"/>
+        <property name="username" value="${db.username}"/>
+        <property name="password" value="${db.password}"/>
+    </bean>
+
+    <!--spring 事务管理类-->
+    <bean class="org.springframework.jdbc.datasource.DataSourceTransactionManager" id="transactionManager">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <!--mybatis 配置-->
+    <!--配置sqlSessionFactory-->
+    <bean class="org.mybatis.spring.SqlSessionFactoryBean" id="factory">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="mapperLocations" value="classpath:com/tor/mapper/*Mapper.xml"/>
+        <property name="configLocation" value="classpath:mybatis-config.xml"/>
+    </bean>
+
+    <!--配置mybatis扫描器-->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.tor.mapper"/>
+    </bean>
+
+    <!--&lt;!&ndash;声明式事务&ndash;&gt;-->
+    <!--<tx:advice id="transactionInterceptor">-->
+        <!--<tx:attributes>-->
+            <!--<tx:method name="del*"/>-->
+            <!--<tx:method name="upd*"/>-->
+            <!--<tx:method name="ins*"/>-->
+            <!--<tx:method name="*" read-only="true"/>-->
+        <!--</tx:attributes>-->
+    <!--</tx:advice>-->
+
+    <!--&lt;!&ndash;aop配置&ndash;&gt;-->
+    <!--<aop:config>-->
+        <!--<aop:pointcut id="point" expression="execution(* com.xz.service.impl.*.*(..))"/>-->
+        <!--<aop:advisor advice-ref="transactionInterceptor" pointcut-ref="point"/>-->
+    <!--</aop:config>-->
+
+    <!--&lt;!&ndash;其他的相关的配置&ndash;&gt;-->
+    <!--&lt;!&ndash;spring 邮件主键配置&ndash;&gt;-->
+    <!--<bean class="org.springframework.mail.javamail.JavaMailSenderImpl" id="javaMailSender">-->
+        <!--<property name="host" value="smtp.qq.com"/>-->
+        <!--<property name="username" value="446798939@qq.com"/>-->
+        <!--<property name="password" value="znwlhdqgvtqybhfi"/>-->
+    <!--</bean>-->
+
+    <!--&lt;!&ndash;使用spring集成的freemarker生成模板&ndash;&gt;-->
+    <!--<bean class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer"-->
+          <!--id="freeMarkerConfigurer">-->
+        <!--<property name="templateLoaderPath" value="/WEB-INF/etf/"/>-->
+        <!--<property name="freemarkerSettings">-->
+            <!--<props>-->
+                <!--<prop key="default_encoding">UTF-8</prop> &lt;!&ndash;模板的编码格式 &ndash;&gt;-->
+                <!--<prop key="locale">zh_CN</prop> &lt;!&ndash;本地化设置&ndash;&gt;-->
+            <!--</props>-->
+        <!--</property>-->
+    <!--</bean>-->
+
+    <!-- 使用@Transactional进行声明式事务管理需要声明下面这行 -->
+    <tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true" />
+
+</beans>

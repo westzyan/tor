@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tor.mapper.CountryOnionRelayMapper">
+    <resultMap id="BaseResultMap" type="com.tor.pojo.CountryOnionRelay">
+        <constructor>
+            <idArg column="id" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="value" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <arg column="numBridge" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+<!--            <idArg column="id" jdbcType="INTEGER" javaType="java.lang.Integer"/>-->
+<!--            <arg column="routerName" jdbcType="VARCHAR" javaType="java.lang.String"/>-->
+<!--            <arg column="fingerprint" jdbcType="VARCHAR" javaType="java.lang.String"/>-->
+<!--            <arg column="contact" jdbcType="INTEGER" javaType="java.lang.Integer"/>-->
+<!--            <arg column="ip" jdbcType="VARCHAR" javaType="java.lang.String"/>-->
+<!--            <arg column="isBridge" jdbcType="BIT" javaType="boolean"/>-->
+<!--            <arg column="onionRouterPort" jdbcType="VARCHAR" javaType="java.lang.String"/>-->
+<!--            <arg column="directoryServerPort" jdbcType="VARCHAR" javaType="java.lang.String"/>-->
+<!--            <arg column="platform" jdbcType="VARCHAR" javaType="java.lang.String"/>-->
+
+        </constructor>
+    </resultMap>
+
+    <select id="selectAll" resultMap="BaseResultMap">
+    select countryCode as id ,count(id) as value,count(isBridge) as numBridge
+    from onionRelay
+    group by countryCode
+    </select>
+
+</mapper>
