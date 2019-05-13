@@ -35,6 +35,11 @@
                     src="images/job-msg.png" alt=""> <span>数据包捕获模块</span>
             </a>
         </div>
+        <div class="nav-tit">
+            <a href="/first/show_five_tuple_init" target="main"> <img
+                    src="images/personal-msg.png" style="height: 30px" alt=""> <span>数据包内容查看</span>
+            </a>
+        </div>
         <div class="personal-list" id="pcap_child">
             <ul>
                 <li><a href="/pcap/list" target="main">数据包查看</a></li>

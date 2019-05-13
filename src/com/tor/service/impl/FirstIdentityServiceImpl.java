@@ -1,9 +1,13 @@
 package com.tor.service.impl;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.tor.common.ServerResponse;
 import com.tor.pojo.PageBean;
 import com.tor.pojo.Traffic;
 import com.tor.service.IFirstIdentityService;
+import com.tor.util.GetTrafficList;
 import com.tor.util.Identification;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -14,7 +18,11 @@ import java.util.List;
 @Service("iFirstIdentityService")
 public class FirstIdentityServiceImpl implements IFirstIdentityService {
 
-
+    /**
+     * 输入文件路径，获取判断后的ServerResponse，并且带有分页，与下面的函数只是返回值不一样
+     * @param filePath
+     * @return ServerResponse<PageBean>
+     */
     public ServerResponse<PageBean> getIdentityList(String filePath) {
         Identification identification = new Identification();
         ServerResponse<List<Traffic>> serverResponse = identification.getLastTrafficList(filePath);
@@ -29,14 +37,22 @@ public class FirstIdentityServiceImpl implements IFirstIdentityService {
         }
     }
 
-    public List<Traffic> getAllList(String filePath) {
-        Identification identification = new Identification();
-        ServerResponse<List<Traffic>> serverResponse = identification.getLastTrafficList(filePath);
-        List<Traffic> trafficList = serverResponse.getData();
-
-        return trafficList;
+    /**
+     * 获取判断后的流量集合
+     * @param filePath flag (flag:0 代表判断过的流量，1：代表获取五元组，即未判断的)
+     * @return List<Traffic>
+     */
+    public List<Traffic> getAllList(String filePath,int flag) {
+        if (flag == 0){
+            Identification identification = new Identification();
+            ServerResponse<List<Traffic>> serverResponse = identification.getLastTrafficList(filePath);
+            List<Traffic> trafficList = serverResponse.getData();
+            return trafficList;
+        }else {
+            List<Traffic> trafficList = new GetTrafficList().getFiveTuple(filePath);
+            return trafficList;
+        }
     }
-
 
     /**
      * 分页查询
@@ -71,6 +87,42 @@ public class FirstIdentityServiceImpl implements IFirstIdentityService {
         pageBean.setList(list);
         pageBean.init();
         return ServerResponse.createBySuccess(pageBean);
+    }
+
+
+    /**
+     * 获取五元组信息，分页功能
+     * @param filePath
+     * @return
+     */
+    public ServerResponse<PageBean> getFiveTupleList(String filePath) {
+        GetTrafficList getTrafficList = new GetTrafficList();
+        List<Traffic> trafficList= getTrafficList.getFiveTuple(filePath);
+        if (trafficList.size() == 0){
+            return ServerResponse.createByErrorMessage("未解析到流量");
+        }
+        return this.queryForPage(20, 1, trafficList);
+    }
+
+    /**
+     * 获取五元组信息，返回json 字符串，前台分页
+     * @param filePath
+     * @return
+     */
+    public ServerResponse<String> getFiveTuple(String filePath) {
+        GetTrafficList getTrafficList = new GetTrafficList();
+        List<Traffic> trafficList= getTrafficList.getFiveTuple(filePath);
+        if (trafficList.size() == 0){
+            return ServerResponse.createByErrorMessage("未解析到流量");
+        }
+        String jsonFiveTuple = JSON.toJSONString(trafficList);
+        return ServerResponse.createBySuccess(jsonFiveTuple);
+    }
+
+    public static void main(String[] args) {
+        FirstIdentityServiceImpl firstIdentityService = new FirstIdentityServiceImpl();
+        ServerResponse serverResponse = firstIdentityService.getFiveTuple("/home/ubuntu2/AW/Bridge/torPcap/20190506/test.pcap");
+        System.out.println(serverResponse.getData());
     }
 
 

@@ -125,13 +125,72 @@ public class GetTrafficList {
         return list;
     }
 
+
+    /**
+     * 输入命令，获取流量包的五元组信息，只包含tcp,udp协议
+     * @param filePath
+     * @return Traffic的List集合
+     */
+    public List<Traffic> getFiveTuple(String filePath) {
+        StringBuilder stringBuilder = new StringBuilder();
+        String commandStr = stringBuilder.append("sudo tshark -r ").append(filePath).append(" -T fields -e frame.time -e ip.src -e tcp.srcport -e udp.srcport -e ip.dst -e tcp.dstport -e udp.dstport -e ip.proto ").toString();
+        List<Traffic> list = new ArrayList<Traffic>();
+        int count = 0;
+        BufferedReader br = null;
+        try {
+            Process p = Runtime.getRuntime().exec(commandStr);
+//			p.waitFor();
+            br = new BufferedReader(new InputStreamReader(p.getInputStream()));
+            String line = null;
+            while ((line = br.readLine()) != null) {
+//                System.out.println("I am the line " +line);
+                String[] a = new GetTrafficList().trafficStringHandle(line);
+                Traffic traffic = new Traffic();
+                traffic.setId(count);
+                traffic.setTime(a[0]);
+                traffic.setSourceIP(a[1]);
+                traffic.setDestinationIP(a[4]);
+                if (a[7].equals("6") || a[7].equals("17")) {
+                    int proto = Integer.parseInt(a[7]);
+                    if (proto == 6) {
+                        traffic.setSourcePort(Integer.parseInt(a[2]));
+                        traffic.setDestinationPort(Integer.parseInt(a[5]));
+                    }
+                    if (proto == 17) {
+                        traffic.setSourcePort(Integer.parseInt(a[3]));
+                        traffic.setDestinationPort(Integer.parseInt(a[6]));
+                    }
+                    traffic.setProtocol(proto);
+                    count++;
+                    list.add(traffic);
+                } else {
+                    count++;
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (br != null) {
+                try {
+                    br.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        System.out.println("FiveTuplelistsize = " + list.size());
+        return list;
+    }
+
     public static void main(String[] args) {
-        String commandStr = "sudo tshark -r /home/ubuntu2/AW/Bridge/torPcap/20190320/tor.pcap "
-                + "-T fields -e ip.src -e tcp.srcport -e udp.srcport -e ip.dst -e tcp.dstport -e udp.dstport -e ip.proto "
-                + "-e ssl.handshake.random_bytes -e ssl.handshake.cipher_suites_length "
-                + "-e ssl.handshake.ciphersuite -e ssl.handshake.extensions_server_name_len "
-                + "-e ssl.handshake.extensions_server_name -e x509sat.uTF8String -e x509af.utcTime";
-        new GetTrafficList().exeCmd(commandStr);
+        String commandStr = "/home/ubuntu2/AW/Bridge/torPcap/20190506/test.pcap";
+//        new GetTrafficList().exeCmd(commandStr);
+        List<Traffic> list = new GetTrafficList().getFiveTuple(commandStr);
+        for(Traffic traffic:list){
+            System.out.println("time:"+traffic.getTime()+ "  ip:"+traffic.getSourceIP()+"  srcport"+ traffic.getSourcePort()+"   dst"+ traffic.getDestinationIP()+"   dstport "+traffic.getDestinationPort()+"   xieyi"+traffic.getProtocol());
+        }
+
 //		String s2 = "			192.168.1.100	52534	192.168.1.197	5555	6	96:9d:05:5f :3a:8e:1c:ce:43:f9:e9:f6:60:a0:76:70:fc:70:85:18:95:ed:fd:57:d9:ff:05:44	30	49195,49199,52393,52392,49196,49200,49162,49161,49171,49172,51,57,47,53,255	28	www.b46xlsadb4cil5ofw5kj.com";
 //		new GetList().trafficStringHandle(s2);
     }

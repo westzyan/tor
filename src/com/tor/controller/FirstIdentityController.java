@@ -38,7 +38,7 @@ public class FirstIdentityController {
         } else {
             //ServerResponse<List<Traffic>> response = iFirstIdentityService.getIdentityList(filePath);
             ServerResponse<PageBean> response = iFirstIdentityService.getIdentityList(filePath);
-            List<Traffic> trafficList = iFirstIdentityService.getAllList(filePath);
+            List<Traffic> trafficList = iFirstIdentityService.getAllList(filePath,0);
             session.setAttribute("list", trafficList);
             model.addAttribute("res", response);
         }
@@ -54,13 +54,43 @@ public class FirstIdentityController {
         } else if (StringUtils.isEmpty(page)) {
             ServerResponse response = ServerResponse.createByErrorMessage("参数错误");
             model.addAttribute("res", response);
-//            model.addAttribute("status", 0);
-//            model.addAttribute("msg", "文件路径为空");
         } else {
             ServerResponse<PageBean> response = iFirstIdentityService.queryForPage(20, page, trafficList);
             model.addAttribute("res", response);
         }
         return "first_identity";
+    }
+
+
+    @RequestMapping(value = "/first/show_five_tuple")
+    public String showFiveTuple(HttpSession session, Model model, String filePath) {
+
+        if (StringUtils.isEmpty(filePath)) {
+            ServerResponse response = ServerResponse.createByErrorMessage("文件路径为空");
+            session.setAttribute("list", null);
+            model.addAttribute("res", response);
+        } else {
+            //ServerResponse<List<Traffic>> response = iFirstIdentityService.getIdentityList(filePath);
+            ServerResponse<String> response = iFirstIdentityService.getFiveTuple(filePath);
+            model.addAttribute("res", response);
+        }
+        return "show_five_tuple";
+    }
+
+    @RequestMapping(value = "/first/show_five_tuple_by_page")
+    public String showFiveTupleByPage(HttpSession session, Model model, Integer page) {
+        List<Traffic> trafficList = (List<Traffic>) session.getAttribute("list");
+        if (trafficList == null) {
+            ServerResponse response = ServerResponse.createByErrorMessage("超时，请重新判断");
+            model.addAttribute("res", response);
+        } else if (StringUtils.isEmpty(page)) {
+            ServerResponse response = ServerResponse.createByErrorMessage("page参数错误");
+            model.addAttribute("res", response);
+        } else {
+            ServerResponse<PageBean> response = iFirstIdentityService.queryForPage(20, page, trafficList);
+            model.addAttribute("res", response);
+        }
+        return "show_five_tuple";
     }
 
 
@@ -82,5 +112,10 @@ public class FirstIdentityController {
     @RequestMapping(value = "right")
     public String right() {
         return "right";
+    }
+
+    @RequestMapping(value = "/first/show_five_tuple_init")
+    public String showFiveTupleInit() {
+        return "show_five_tuple";
     }
 }

@@ -9,9 +9,13 @@ import java.util.List;
 
 public interface IFirstIdentityService {
 
-    public ServerResponse<PageBean> getIdentityList(String filePath);
+    ServerResponse<PageBean> getIdentityList(String filePath);
 
-    public List<Traffic> getAllList(String filePath);
+    List<Traffic> getAllList(String filePath,int flag);
 
-    public ServerResponse<PageBean> queryForPage(Integer pageSize, Integer page, List<Traffic> trafficList);
+    ServerResponse<PageBean> queryForPage(Integer pageSize, Integer page, List<Traffic> trafficList);
+
+    ServerResponse<PageBean> getFiveTupleList(String filePath);
+
+    ServerResponse<String> getFiveTuple(String filePath);
 }

@@ -7,13 +7,13 @@ import java.util.List;
 
 public interface IPcapManageService {
 
-    public ServerResponse<List<Pcap>> getAllPcap();
+    ServerResponse<List<Pcap>> getAllPcap();
 
-    public ServerResponse deletePcapById(Integer id);
+    ServerResponse deletePcapById(Integer id);
 
-    public ServerResponse<List<Pcap>> insertPcap(Pcap pcap);
+    ServerResponse<List<Pcap>> insertPcap(Pcap pcap);
 
-    public Pcap selectBySha1Value(String sha1Value);
+    Pcap selectBySha1Value(String sha1Value);
 
-    public Pcap selectById(Integer id);
+    Pcap selectById(Integer id);
 }
