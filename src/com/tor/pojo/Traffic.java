@@ -2,6 +2,7 @@ package com.tor.pojo;
 
 public class Traffic {
     private int id;  //id
+    private String time;
     private String sourceIP;
     private int sourcePort;
     private String destinationIP;
@@ -25,6 +26,14 @@ public class Traffic {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
     }
 
     public String getSourceIP() {
@@ -107,12 +116,6 @@ public class Traffic {
         this.serverName = serverName;
     }
 
-    //	public String getHeartbeat() {
-//		return heartbeat;
-//	}
-//	public void setHeartbeat(String heartbeat) {
-//		this.heartbeat = heartbeat;
-//	}
     public String getSubjectAndIssuer() {
         return subjectAndIssuer;
     }
@@ -129,12 +132,6 @@ public class Traffic {
         this.beforeAndAfter = beforeAndAfter;
     }
 
-    //	public String getSerialNumber() {
-//		return serialNumber;
-//	}
-//	public void setSerialNumber(String serialNumber) {
-//		this.serialNumber = serialNumber;
-//	}
     public String getTor() {
         return tor;
     }
@@ -143,12 +140,9 @@ public class Traffic {
         this.tor = tor;
     }
 
-    public Traffic() {
-        super();
-    }
-
-    public Traffic(int id, String sourceIP, int sourcePort, String destinationIP, int destinationPort, int protocol, String randomBytes, int cipherSuitesLength, String cipherSuite, int serverNameLength, String serverName, String subjectAndIssuer, String beforeAndAfter, String tor) {
+    public Traffic(int id, String time, String sourceIP, int sourcePort, String destinationIP, int destinationPort, int protocol, String randomBytes, int cipherSuitesLength, String cipherSuite, int serverNameLength, String serverName, String subjectAndIssuer, String beforeAndAfter, String tor) {
         this.id = id;
+        this.time = time;
         this.sourceIP = sourceIP;
         this.sourcePort = sourcePort;
         this.destinationIP = destinationIP;
@@ -163,5 +157,7 @@ public class Traffic {
         this.beforeAndAfter = beforeAndAfter;
         this.tor = tor;
     }
-
+    public Traffic(){
+        super();
+    }
 }
