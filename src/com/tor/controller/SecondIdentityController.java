@@ -31,18 +31,13 @@ public class SecondIdentityController {
 
         if (StringUtils.isEmpty(trainFilePath)||StringUtils.isEmpty(testFilePath)) {
             ServerResponse response = ServerResponse.createByErrorMessage("文件路径为空");
-            session.setAttribute("list", null);
             model.addAttribute("res", response);
         } else if (StringUtils.isEmpty(feature) || StringUtils.isEmpty(algorathm)) {
             ServerResponse response = ServerResponse.createByErrorMessage("参数错误");
-            session.setAttribute("list", null);
             model.addAttribute("res", response);
         } else {
-
             //ServerResponse<List<Traffic>> response = iFirstIdentityService.getIdentityList(filePath);
             ServerResponse<PageBean> response = iSecondIdentityService.getClassifyList(trainFilePath, testFilePath, feature, algorathm);
-            List<Flow> flowList = iSecondIdentityService.getAllList(trainFilePath, testFilePath, feature, algorathm);
-            session.setAttribute("list", flowList);
             model.addAttribute("res", response);
         }
         return "second_identity";

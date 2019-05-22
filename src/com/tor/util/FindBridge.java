@@ -3,6 +3,7 @@ package com.tor.util;
 import com.csvreader.CsvReader;
 import com.csvreader.CsvWriter;
 import com.tor.pojo.Traffic;
+import org.springframework.util.StringUtils;
 
 import java.io.*;
 import java.net.MalformedURLException;
@@ -112,7 +113,7 @@ public class FindBridge {
         try {
 
             ArrayList<String[]> csvList = new ArrayList<String[]>(); // 用来保存数据
-            String csvFilePath = "/home/ubuntu2/AW/Bridge/Tor_query_EXPORT.csv";
+            String csvFilePath = "/home/ubuntu2/AW/主动探测/Tor_query_EXPORT.csv";
             CsvReader reader = new CsvReader(csvFilePath, ',', Charset.forName("UTF-8")); // 一般用这编码读就可以了
 
 			reader.readHeaders(); // 跳过表头 如果需要表头的话，不要写这句。
@@ -178,7 +179,7 @@ public class FindBridge {
         try {
 
             String csvFilePath = filePath;
-            CsvWriter wr = new CsvWriter(csvFilePath, '\t', Charset.forName("UTF-8"));
+            CsvWriter wr = new CsvWriter(csvFilePath, ',', Charset.forName("UTF-8"));
             String[] header = {"IP", "port"};
             wr.writeRecord(header);
             String[] contents = new String[2];
@@ -204,43 +205,99 @@ public class FindBridge {
         }
         return bridgeMap;
     }
+
+
+
+
+
+
+
+
+    public static Map<String,String> txt2String(String filePath) {
+        File file = new File(filePath);
+        StringBuilder result = new StringBuilder();
+        Map<String, String> test = new HashMap<>();
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(file));//构造一个BufferedReader类来读取文件
+            String s = null;
+//            System.out.println("hahah");
+            while ((s = br.readLine()) != null) {//使用readLine方法，一次读一行
+//                System.out.println(s);
+//                if (!s.startsWith("@") && !StringUtils.isEmpty(s)) {
+//                    String[] feature = s.split(",");
+//
+//                    result.append(s + System.lineSeparator());
+//                }
+                String ipPort = s.substring(44,65).replace(" ","");
+                String[] ipAndPort = ipPort.split(":");
+                test.put(ipAndPort[0],ipAndPort[1]);
+
+//                System.out.println(ipPort);
+            }
+            result.append(666);
+            br.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return test;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
     public static void main(String[] args) {
 
         Map<String,String> bridgeMap = new HashMap<String,String>();
-        Map<String,String> delayAndBridgeMap = FindBridge.readCsv("/home/ubuntu2/AW/Bridge/torPcap/20190418/links.csv",1);
-        Map<String,String> delayAndBridgeMap1 = FindBridge.readCsv("/home/ubuntu2/AW/Bridge/torPcap/20190419/links.csv");
-        Map<String,String> delayAndBridgeMap2 = FindBridge.readCsv("/home/ubuntu2/AW/Bridge/torPcap/20190421/links.csv");
+        Map<String,String> delayAndBridgeMap = txt2String("/home/ubuntu2/AW/Bridge/torPcap/20190521/test.csv");
+//        Map<String,String> delayAndBridgeMap1 = FindBridge.readCsv("/home/ubuntu2/AW/Bridge/torPcap/20190419/links.csv");
+//        Map<String,String> delayAndBridgeMap2 = FindBridge.readCsv("/home/ubuntu2/AW/Bridge/torPcap/20190421/links.csv");
         Map<String,String> delayMap = FindBridge.readCsv("dd","666");
         int count = 0;
         for (Map.Entry<String, String> entry: delayAndBridgeMap.entrySet()){
             boolean contains = delayMap.containsKey(entry.getKey());
             if (!contains){
                 count++;
-                System.out.println(count+ " ip:" + entry.getKey()+"   port:" + entry.getValue());
+//                System.out.println(count+ " ip:" + entry.getKey()+"   port:" + entry.getValue());
+                System.out.println(entry.getKey()+":"+entry.getValue());
                 bridgeMap.put(entry.getKey(),entry.getValue());
             }
         }
         System.out.println("bridge number："+ count);
-        for (Map.Entry<String, String> entry: delayAndBridgeMap1.entrySet()){
-            boolean contains = delayMap.containsKey(entry.getKey());
-            if (!contains){
-                count++;
-                System.out.println(count+ " ip:" + entry.getKey()+"   port:" + entry.getValue());
-                bridgeMap.put(entry.getKey(),entry.getValue());
-            }
-        }
-        System.out.println("bridge number："+ count);
-        for (Map.Entry<String, String> entry: delayAndBridgeMap2.entrySet()){
-            boolean contains = delayMap.containsKey(entry.getKey());
-            if (!contains){
-                count++;
-                System.out.println(count+ " ip:" + entry.getKey()+"   port:" + entry.getValue());
-                bridgeMap.put(entry.getKey(),entry.getValue());
-            }
-        }
+//        for (Map.Entry<String, String> entry: delayAndBridgeMap1.entrySet()){
+//            boolean contains = delayMap.containsKey(entry.getKey());
+//            if (!contains){
+//                count++;
+//                System.out.println(count+ " ip:" + entry.getKey()+"   port:" + entry.getValue());
+//                bridgeMap.put(entry.getKey(),entry.getValue());
+//            }
+//        }
+//        System.out.println("bridge number："+ count);
+//        for (Map.Entry<String, String> entry: delayAndBridgeMap2.entrySet()){
+//            boolean contains = delayMap.containsKey(entry.getKey());
+//            if (!contains){
+//                count++;
+//                System.out.println(count+ " ip:" + entry.getKey()+"   port:" + entry.getValue());
+//                bridgeMap.put(entry.getKey(),entry.getValue());
+//            }
+//        }
         System.out.println("bridge number："+ count);
         FindBridge findBridge = new FindBridge();
-        findBridge.writeCsv("/home/ubuntu2/AW/Bridge/torPcap/bridge",bridgeMap);
+        findBridge.writeCsv("/home/ubuntu2/AW/Bridge/torPcap/bridge11111111",bridgeMap);
+
+
+//        String s = "tcp        0      0 155.138.223.47:9001     ";
+//        String s1 = "tcp        0      0 155.138.223.47:9001     141.255.166.150:60935";
+//        System.out.println(s.length());
+//        System.out.println(s1.length());
 
     }
 

@@ -10,6 +10,8 @@ public interface ISecondIdentityService {
 
     ServerResponse<PageBean> getClassifyList(String trainFilePath,String testFilePath,String feature, String algorithm);
 
+    ServerResponse<String> getLabelList(String trainFilePath,String testFilePath,String feature, String algorithm);
+
     ServerResponse<PageBean> queryForPage(Integer pageSize, Integer page, List<Flow> flowList);
 
     List<Flow> getAllList(String trainFilePath,String testFilePath, String feature, String algorithm);

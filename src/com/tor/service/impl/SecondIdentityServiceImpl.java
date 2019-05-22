@@ -1,5 +1,6 @@
 package com.tor.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.tor.common.ServerResponse;
 import com.tor.pojo.Flow;
 import com.tor.pojo.PageBean;
@@ -25,6 +26,20 @@ public class SecondIdentityServiceImpl implements ISecondIdentityService {
             return ServerResponse.createByErrorMessage(msg);
         }
     }
+
+    public ServerResponse<String> getLabelList(String trainFilePath,String testFilePath,String feature, String algorithm){
+        ClassifyUtil classifyUtil = new ClassifyUtil();
+        ServerResponse<List<Flow>> serverResponse = classifyUtil.getClassifyList(trainFilePath, testFilePath,feature, algorithm);
+        List<Flow> flowList = serverResponse.getData();
+        int status = serverResponse.getStatus();
+        String msg = serverResponse.getMsg();
+        if (status == 0) {
+           return ServerResponse.createBySuccess(JSON.toJSONString(flowList));
+        } else {
+            return ServerResponse.createByErrorMessage(msg);
+        }
+    }
+
 
     public List<Flow> getAllList(String trainFilePath,String testFilePath, String feature, String algorithm) {
         ClassifyUtil classifyUtil = new ClassifyUtil();
