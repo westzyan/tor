@@ -1,0 +1,3 @@
+@relation trainFiledelete.arff
+@attribute false {TOR,NONTOR,'?'}
+@data

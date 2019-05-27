@@ -8,11 +8,15 @@ import java.util.List;
 
 public interface ISecondIdentityService {
 
-    ServerResponse<PageBean> getClassifyList(String trainFilePath,String testFilePath,String feature, String algorithm);
+//    ServerResponse<PageBean> getClassifyList(String trainFilePath,String testFilePath,String feature, String algorithm);
 
-    ServerResponse<String> getLabelList(String trainFilePath,String testFilePath,String feature, String algorithm);
+    ServerResponse<String> getLabelList(String trainFilePath,String testFilePath,String feature, String algorithm) throws Exception;
 
-    ServerResponse<PageBean> queryForPage(Integer pageSize, Integer page, List<Flow> flowList);
+    String getFeatures(String trainFilePath,String feature) throws Exception;
 
-    List<Flow> getAllList(String trainFilePath,String testFilePath, String feature, String algorithm);
+    int getFlowNumber(String trainFilePath,String testFilePath,String feature, String algorithm) throws Exception;
+
+//    ServerResponse<PageBean> queryForPage(Integer pageSize, Integer page, List<Flow> flowList);
+
+//    List<Flow> getAllList(String trainFilePath,String testFilePath, String feature, String algorithm);
 }

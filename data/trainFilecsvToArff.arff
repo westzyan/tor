@@ -1,0 +1,28 @@
+@relation feature.arff
+@attribute duration numeric
+@attribute flowBytsPsec numeric
+@attribute flowPktsPsec numeric
+@attribute flowIATMean numeric
+@attribute flowIATStd numeric
+@attribute flowIATMax numeric
+@attribute flowIATMin numeric
+@attribute fwdIATTot numeric
+@attribute fwdIATMean numeric
+@attribute fwdIATStd numeric
+@attribute fwdIATMax numeric
+@attribute fwdIATMin numeric
+@attribute bwdIATtot numeric
+@attribute bwdIATMean numeric
+@attribute bwdIATStd numeric
+@attribute bwdIATMax numeric
+@attribute bwdIATMin numeric
+@attribute activeMean numeric
+@attribute activeStd numeric
+@attribute activeMax numeric
+@attribute activeMin numeric
+@attribute idleMean numeric
+@attribute idleStd numeric
+@attribute idleMax numeric
+@attribute idleMin numeric
+@attribute label {TOR,NONTOR}
+@data

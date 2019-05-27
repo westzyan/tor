@@ -27,24 +27,34 @@ public class SecondIdentityController {
 
 
     @RequestMapping(value = "/second/identity")
-    public String identity(HttpSession session, Model model, String trainFilePath,String testFilePath, String feature, String algorathm) {
+    public String identity(Model model, String trainFilePath,String testFilePath, String feature, String algorithm) throws Exception {
 
         if (StringUtils.isEmpty(trainFilePath)||StringUtils.isEmpty(testFilePath)) {
             ServerResponse response = ServerResponse.createByErrorMessage("文件路径为空");
             model.addAttribute("res", response);
-        } else if (StringUtils.isEmpty(feature) || StringUtils.isEmpty(algorathm)) {
+        }
+
+        else if (StringUtils.isEmpty(feature) || StringUtils.isEmpty(algorithm)) {
             ServerResponse response = ServerResponse.createByErrorMessage("参数错误");
             model.addAttribute("res", response);
-        } else {
+            System.out.println("666");
+        }
+        else {
+            System.out.println("777");
             //ServerResponse<List<Traffic>> response = iFirstIdentityService.getIdentityList(filePath);
-            ServerResponse<PageBean> response = iSecondIdentityService.getClassifyList(trainFilePath, testFilePath, feature, algorathm);
+            ServerResponse<String> response = iSecondIdentityService.getLabelList(trainFilePath, testFilePath, feature, algorithm);
+            System.out.println("888");
+            String selectFeatures = iSecondIdentityService.getFeatures(trainFilePath, feature);
+            int flowNumber = iSecondIdentityService.getFlowNumber(trainFilePath, testFilePath, feature, algorithm);
             model.addAttribute("res", response);
+            model.addAttribute("select_features", selectFeatures);
+            model.addAttribute("flow_number", flowNumber);
         }
         return "second_identity";
     }
 
 
-    @RequestMapping(value = "/second/identity_by_page")
+/*    @RequestMapping(value = "/second/identity_by_page")
     public String identityByPage(HttpSession session, Model model, Integer page) {
         List<Flow> flowList = (List<Flow>) session.getAttribute("list");
         if (flowList == null) {
@@ -58,5 +68,5 @@ public class SecondIdentityController {
             model.addAttribute("res", response);
         }
         return "second_identity";
-    }
+    }*/
 }
