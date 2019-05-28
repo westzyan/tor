@@ -25,7 +25,7 @@ public class SecondIdentityServiceImpl implements ISecondIdentityService {
         }
     }*/
 
-    public ServerResponse<String> getLabelList(String trainFilePath,String testFilePath,String feature, String algorithm)  {
+/*    public ServerResponse<String> getLabelList(String trainFilePath,String testFilePath,String feature, String algorithm)  {
         ClassifyList classifyList = new ClassifyList();
         System.out.println("getLabelList1");
         List<Flow> flowList = classifyList.getClassifyList(trainFilePath, testFilePath,feature, algorithm);
@@ -37,6 +37,14 @@ public class SecondIdentityServiceImpl implements ISecondIdentityService {
             System.out.println("fdsafasffaadsf");
             return ServerResponse.createBySuccess(JSON.toJSONString(flowList));
         }
+    }*/
+
+
+    public List<Flow> getLabelList(String trainFilePath,String testFilePath,String feature, String algorithm)  {
+        ClassifyList classifyList = new ClassifyList();
+        List<Flow> flowList = classifyList.getClassifyList(trainFilePath, testFilePath,feature, algorithm);
+
+        return flowList;
     }
 
     public String getFeatures(String trainFilePath,String feature) {
@@ -60,14 +68,8 @@ public class SecondIdentityServiceImpl implements ISecondIdentityService {
 //        return flowList;
 //    }
 
-  /*  *//**
-     * 分页查询
-     *
-     * @param pageSize 每页显示多少记录
-     * @param page     当前页
-     * @param flowList 流List
-     * @return 封装了分页信息的bean
-     *//*
+  /*
+
     public ServerResponse<PageBean> queryForPage(Integer pageSize, Integer page, List<Flow> flowList) {
         System.out.println(flowList == null);
         int allRow = flowList.size();  //总记录数
@@ -95,4 +97,5 @@ public class SecondIdentityServiceImpl implements ISecondIdentityService {
         return ServerResponse.createBySuccess(pageBean);
     }
 */
+
 }

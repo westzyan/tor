@@ -66,37 +66,44 @@ public class ClassifyList {
 					test.setClassIndex(test.numAttributes() - 1);
 
 				for (int row = 0; row < csvList.size(); row++) {
-					Flow features = new Flow();
+					Flow flow = new Flow();
 					// 将csv中的特征给Features中对应的变量赋值
-					features.setFlowDuration(csvList.get(row)[7]);
-					features.setFlowBytsPsec(csvList.get(row)[20]);
-					features.setFlowPktsPsec(csvList.get(row)[21]);
-					features.setFlowIATMean(csvList.get(row)[22]);
-					features.setFlowIATStd(csvList.get(row)[23]);
-					features.setFlowIATMax(csvList.get(row)[24]);
-					features.setFlowIATMin(csvList.get(row)[25]);
-					features.setFwdIATTot(csvList.get(row)[26]);
-					features.setFwdIATMean(csvList.get(row)[27]);
-					features.setFwdIATStd(csvList.get(row)[28]);
-					features.setFwdIATMax(csvList.get(row)[29]);
-					features.setFwdIATMin(csvList.get(row)[30]);
-					features.setBwdIATtot(csvList.get(row)[31]);
-					features.setBwdIATMean(csvList.get(row)[32]);
-					features.setBwdIATStd(csvList.get(row)[33]);
-					features.setBwdIATMax(csvList.get(row)[34]);
-					features.setBwdIATMin(csvList.get(row)[35]);
-					features.setActiveMean(csvList.get(row)[75]);
-					features.setActiveStd(csvList.get(row)[76]);
-					features.setActiveMax(csvList.get(row)[77]);
-					features.setActiveMin(csvList.get(row)[78]);
-					features.setIdleMean(csvList.get(row)[79]);
-					features.setIdleStd(csvList.get(row)[80]);
-					features.setIdleMax(csvList.get(row)[81]);
-					features.setIdleMin(csvList.get(row)[82]);
+					flow.setFlowID(csvList.get(row)[0]);
+					flow.setSrcIP(csvList.get(row)[1]);
+					flow.setSrcPort(csvList.get(row)[2]);
+					flow.setDstIP(csvList.get(row)[3]);
+					flow.setDstPort(csvList.get(row)[4]);
+					flow.setProtocol(csvList.get(row)[5]);
+					flow.setTimeStamp(csvList.get(row)[6]);
+					flow.setFlowDuration(csvList.get(row)[7]);
+					flow.setFlowBytsPsec(csvList.get(row)[20]);
+					flow.setFlowPktsPsec(csvList.get(row)[21]);
+					flow.setFlowIATMean(csvList.get(row)[22]);
+					flow.setFlowIATStd(csvList.get(row)[23]);
+					flow.setFlowIATMax(csvList.get(row)[24]);
+					flow.setFlowIATMin(csvList.get(row)[25]);
+					flow.setFwdIATTot(csvList.get(row)[26]);
+					flow.setFwdIATMean(csvList.get(row)[27]);
+					flow.setFwdIATStd(csvList.get(row)[28]);
+					flow.setFwdIATMax(csvList.get(row)[29]);
+					flow.setFwdIATMin(csvList.get(row)[30]);
+					flow.setBwdIATtot(csvList.get(row)[31]);
+					flow.setBwdIATMean(csvList.get(row)[32]);
+					flow.setBwdIATStd(csvList.get(row)[33]);
+					flow.setBwdIATMax(csvList.get(row)[34]);
+					flow.setBwdIATMin(csvList.get(row)[35]);
+					flow.setActiveMean(csvList.get(row)[75]);
+					flow.setActiveStd(csvList.get(row)[76]);
+					flow.setActiveMax(csvList.get(row)[77]);
+					flow.setActiveMin(csvList.get(row)[78]);
+					flow.setIdleMean(csvList.get(row)[79]);
+					flow.setIdleStd(csvList.get(row)[80]);
+					flow.setIdleMax(csvList.get(row)[81]);
+					flow.setIdleMin(csvList.get(row)[82]);
 					// 调用分类函数进行分类，并将分类结果的标签赋值，存入List中
-					features.setLabel(AlgorithmUtil.classify(train, test,flag).get(row));
+					flow.setLabel(AlgorithmUtil.classify(train, test,flag).get(row));
 					// 将该Features存入ArrayList
-					display.add(features);
+					display.add(flow);
 					//打印测试
 //					for (int i = 0; i < display.size(); i++) {
 //						System.out.printf("%-50s %-50s %-50s %-50s ",
@@ -142,9 +149,11 @@ public class ClassifyList {
 	}
 
 	public static void main(String[] args) {
-//		List<Flow> flow=getClassifyList("/home/ubuntu2/yingshirui/new/2018-11-26.csv","/home/ubuntu2/yingshirui/new/2018-11-27.csv","CfsSubsetEval+BestFirst","RandomForest");
-//		System.out.println(flow.size());
-//		System.out.println(showSelectFeatures("E:\\Project file\\data\\daily\\2018-11-26.csv","CfsSubsetEval+BestFirst"));
+		ClassifyList classifyList = new ClassifyList();
+		List<Flow> flow = classifyList.getClassifyList("/home/ubuntu2/yingshirui/new/2018-11-26.csv","/home/ubuntu2/yingshirui/new/2018-11-27.csv","CfsSubsetEval+BestFirst","RandomForest");
+		System.out.println(flow.size());
+		System.out.println(flow.get(0).getSrcIP());
+		System.out.println(classifyList.showSelectFeatures("/home/ubuntu2/yingshirui/new/2018-11-26.csv","CfsSubsetEval+BestFirst"));
 	}
 
 

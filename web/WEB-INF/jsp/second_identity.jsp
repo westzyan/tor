@@ -13,6 +13,7 @@
     <title></title>
     <link rel="stylesheet" href="${pageScope.request.ContextPath}/css/common.css">
     <link rel="stylesheet" type="text/css" href="${pageScope.request.ContextPath}/css/iden.css"/>
+    <script type="text/javascript" src="${pageScope.request.ContextPath}/js/jquery-1.9.1.min.js"></script>
     <script type="text/javascript" src="${pageScope.request.ContextPath}/js/front-endPage.js"></script><!-- 前台分页 -->
 
     <link rel="stylesheet" type="text/css" href="${pageScope.request.ContextPath}/css/table.css">
@@ -32,8 +33,8 @@
                             特征筛选方法选择
                                 <select name="feature">
                                     <option value=""></option>
-                                    <option value="CfsSubsetEval,BestFirst">CfsSubsetEval+BestFirst</option>
-                                    <option value="Infogain,Ranker">Infogain+Ranker</option>
+                                    <option value="CfsSubsetEval+BestFirst">CfsSubsetEval+BestFirst</option>
+                                    <option value="Infogain+Ranker">Infogain+Ranker</option>
                                 </select><br>
                                 分类算法选择
                                 <select name="algorithm">
@@ -53,6 +54,7 @@
                                 <span>流量总条数:${flow_number}</span>
                                 <p>Tor流量精确判别结果</p>
                             </div>
+                            <br><br><br>
                             <div id="labelBox"></div>
                             <%--<table border="1" class="tab_css_1" width="80%">--%>
                                 <%--<tr>--%>

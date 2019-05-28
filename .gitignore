@@ -1,3 +1,5 @@
 .idea/
 out/
 .attach_*
+data/
+web/classes/

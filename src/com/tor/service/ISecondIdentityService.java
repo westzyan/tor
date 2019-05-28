@@ -10,11 +10,12 @@ public interface ISecondIdentityService {
 
 //    ServerResponse<PageBean> getClassifyList(String trainFilePath,String testFilePath,String feature, String algorithm);
 
-    ServerResponse<String> getLabelList(String trainFilePath,String testFilePath,String feature, String algorithm) throws Exception;
+    List<Flow> getLabelList(String trainFilePath,String testFilePath,String feature, String algorithm);
 
-    String getFeatures(String trainFilePath,String feature) throws Exception;
+    String getFeatures(String trainFilePath,String feature);
 
-    int getFlowNumber(String trainFilePath,String testFilePath,String feature, String algorithm) throws Exception;
+    int getFlowNumber(String trainFilePath,String testFilePath,String feature, String algorithm);
+
 
 //    ServerResponse<PageBean> queryForPage(Integer pageSize, Integer page, List<Flow> flowList);
 
