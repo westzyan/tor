@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
@@ -29,7 +30,7 @@ public class SecondIdentityController {
 
 
     @RequestMapping(value = "/second/identity")
-    public String identity(Model model, String trainFilePath,String testFilePath, String feature, String algorithm) {
+    public String identity(Model model,  String trainFilePath, String testFilePath, String feature, String algorithm) {
 
         if (StringUtils.isEmpty(trainFilePath)||StringUtils.isEmpty(testFilePath)) {
             ServerResponse response = ServerResponse.createByErrorMessage("文件路径为空");

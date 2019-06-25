@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
@@ -30,6 +32,23 @@ public class FirstIdentityController {
 
     @RequestMapping(value = "/first/identity")
     public String identity(HttpSession session, Model model, String filePath) {
+
+        if (StringUtils.isEmpty(filePath)) {
+            ServerResponse response = ServerResponse.createByErrorMessage("文件路径为空");
+            session.setAttribute("list", null);
+            model.addAttribute("res", response);
+        } else {
+            //ServerResponse<List<Traffic>> response = iFirstIdentityService.getIdentityList(filePath);
+            ServerResponse<PageBean> response = iFirstIdentityService.getIdentityList(filePath);
+            List<Traffic> trafficList = iFirstIdentityService.getAllList(filePath,0);
+            session.setAttribute("list", trafficList);
+            model.addAttribute("res", response);
+        }
+        return "first_identity";
+    }
+
+    @RequestMapping(value = "/first/identity_by_init_page")
+    public String identityByInitPage(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse,HttpSession session, Model model, String filePath) {
 
         if (StringUtils.isEmpty(filePath)) {
             ServerResponse response = ServerResponse.createByErrorMessage("文件路径为空");
@@ -112,6 +131,11 @@ public class FirstIdentityController {
     @RequestMapping(value = "right")
     public String right() {
         return "right";
+    }
+
+    @RequestMapping(value = "/first/first_identity")
+    public String firstIdentity() {
+        return "first_identity";
     }
 
     @RequestMapping(value = "/first/show_five_tuple_init")

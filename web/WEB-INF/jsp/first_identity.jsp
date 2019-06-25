@@ -114,7 +114,7 @@
                     </div>
                     </c:if>
                     <c:if test="${ empty res}">
-                        对不起，请先<a href="/user/login">登录</a>
+                        对不起，请求为空</a>
                     </c:if>
                 </div>
             </div>

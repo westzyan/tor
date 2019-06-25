@@ -35,7 +35,7 @@
             <div class="basic">
                 <div class="basicInfo select active">
                     <div class="thead">
-                        <form action="/toIdentity" method="post">
+                        <form action="/first/identity" method="post">
                             <span><input type="file"><input type=submit id="a" value="判别"></span>
                             <span><input type="textfield" name="filePath" style="height: 35px; width: 80%;">
                                       <input type=submit value="判别" style="height: 35px; width: 10%;"></span>
