@@ -17,8 +17,22 @@
     <link rel="stylesheet" href="${pageScope.request.ContextPath}/css/world.css" />
 
 </head>
-<body>
-
+<body >
+    <div class="container flgure">
+        <div class="content">
+            <div class="basic">
+                <div class="basicInfo select active">
+                    <div class="thead">
+                        <form action="/first/identity" method="post">
+                            <span >请输入流量包路径：</span>
+                            <span><input type="textfield" name="filePath" style="height: 35px; width: 70%;">
+                                          <input type=submit value="判别" style="height: 35px; width: 10%;"></span>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <div id="chartdiv"></div>
     <script src="${pageScope.request.ContextPath}/js/world/core.js"></script>
     <script src="${pageScope.request.ContextPath}/js/world/maps.js"></script>
@@ -30,21 +44,10 @@
     </script>
 
 
-    <div class="container flgure">
-        <div class="content">
-            <div class="basic">
-                <div class="basicInfo select active">
-                    <div class="thead">
-                        <form action="/first/identity" method="post">
-                            <span><input type="file"><input type=submit id="a" value="判别"></span>
-                            <span><input type="textfield" name="filePath" style="height: 35px; width: 80%;">
-                                      <input type=submit value="判别" style="height: 35px; width: 10%;"></span>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <div>
+        <a href="http://192.168.1.100/tor">态势感知</a>
     </div>
+
 </body>
 
 

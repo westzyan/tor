@@ -32,7 +32,8 @@ public class FirstIdentityController {
 
     @RequestMapping(value = "/first/identity")
     public String identity(HttpSession session, Model model, String filePath) {
-
+        int count = 0;
+        int count1 = 0;
         if (StringUtils.isEmpty(filePath)) {
             ServerResponse response = ServerResponse.createByErrorMessage("文件路径为空");
             session.setAttribute("list", null);
@@ -41,8 +42,18 @@ public class FirstIdentityController {
             //ServerResponse<List<Traffic>> response = iFirstIdentityService.getIdentityList(filePath);
             ServerResponse<PageBean> response = iFirstIdentityService.getIdentityList(filePath);
             List<Traffic> trafficList = iFirstIdentityService.getAllList(filePath,0);
+            for (int i = 0; i < trafficList.size(); i++){
+                if (trafficList.get(i).getTor().equals("YES")){
+                    count++;
+                }
+                if (trafficList.get(i).getTor().equals("未找到连接过程，可疑")){
+                    count1++;
+                }
+            }
             session.setAttribute("list", trafficList);
             model.addAttribute("res", response);
+            model.addAttribute("tor_number",count);
+            model.addAttribute("tor_number1",count1);
         }
         return "first_identity";
     }

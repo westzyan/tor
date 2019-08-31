@@ -150,7 +150,7 @@ public class ClassifyList {
 
 	public static void main(String[] args) {
 		ClassifyList classifyList = new ClassifyList();
-		List<Flow> flow = classifyList.getClassifyList("/home/ubuntu2/yingshirui/new/2018-11-26.csv","/home/ubuntu2/yingshirui/new/2018-11-27.csv","CfsSubsetEval+BestFirst","RandomForest");
+		List<Flow> flow = classifyList.getClassifyList("/home/ubuntu2/test/second/2018-11-26train.csv","/home/ubuntu2/test/second/2018-11-27test.csv","CfsSubsetEval+BestFirst","C4.5");
 		System.out.println(flow.size());
 		System.out.println(flow.get(0).getSrcIP());
 		System.out.println(classifyList.showSelectFeatures("/home/ubuntu2/yingshirui/new/2018-11-26.csv","CfsSubsetEval+BestFirst"));

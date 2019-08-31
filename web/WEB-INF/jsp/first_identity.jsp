@@ -13,16 +13,30 @@
     <title></title>
     <link rel="stylesheet" href="${pageScope.request.ContextPath}/css/common.css">
     <link rel="stylesheet" type="text/css" href="${pageScope.request.ContextPath}/css/iden.css"/>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="renderer" content="webkit">
+    <link rel="stylesheet" href="${pageScope.request.ContextPath}/css/pintuer.css">
+    <link rel="stylesheet" href="${pageScope.request.ContextPath}/css/admin.css">
+    <script src="${pageScope.request.ContextPath}/js/jquery.js"></script>
+    <script src="${pageScope.request.ContextPath}/js/pintuer.js"></script>
 </head>
 <body>
+
+<div class="panel admin-panel">
+    <div class="panel-head" id="add"><strong><span class="icon-pencil-square-o"></span>初步过滤</strong> <a href="/index">返回主页</a> </div>
+</div>
 <center>
+
     <div class="container flgure">
         <div class="content">
             <div class="basic">
                 <div class="basicInfo select active">
                     <div class="thead">
                         <form action="/first/identity" method="post">
-                            <span><input type="file"><input type=submit id="a" value="判别"></span>
+                            <span>请输入流量包路径</span>
                             <span><input type="textfield" name="filePath" style="height: 35px; width: 80%;">
 									  <input type=submit value="判别" style="height: 35px; width: 10%;"></span>
                         </form>
@@ -31,9 +45,10 @@
                     <div class="table">
                         <c:if test="${res.data != null}">
                             <div class="thead">
-                               <span>流量总条数:${res.data.allRow}</span>
+                               <p style="color: #3b3b3b">流量总条数:${res.data.allRow}</p> <p style="color: #ff6600">可疑TOR流量条数：${tor_number1}</p> <p style="color: #ee3333">TOR流量条数：${tor_number}</p>
                                 <p>Tor流量初步判别结果</p>
                             </div>
+                            <br><br><br><br>
                             <table border="1" class="tab_css_1" width="80%">
                                 <tr>
                                     <th>序号</th>
@@ -68,9 +83,9 @@
                                         共${res.data.totalPage}页 &nbsp;&nbsp;&nbsp;
                                         当前第${res.data.currentPage}页<br>
                                         <form action="/first/identity_by_page" method="post">
-												 <span>跳转到第<input type="text" name="page"
-                                                                  style="height: 35px; width: 10%;" id="page">页
-												 <input type=submit value="跳转" style="height: 35px; width: 10%;"></span>
+												 <%--<span>跳转到第<input type="text" name="page"--%>
+                                                                  <%--style="height: 35px; width: 10%;" id="page">页--%>
+												 <%--<input type=submit value="跳转" style="height: 35px; width: 10%;"></span>--%>
                                             <%--每页显示<input type="text" name="pageSize" value="${res.data.pageSize}"--%>
                                                        <%--style="height: 35px; width: 10%;" id="pageSize">条--%>
                                         </form>
@@ -110,12 +125,17 @@
                         </c:if>
 
                         <c:if test="${not empty res}">
-                        <div>状态${res.status}信息${res.msg}</div>
+                        <br><br><br>
+                        <div class="thead"><span>文件保存在：/home/ubuntu2/test/second/&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                            <form action="/second/identity_init">
+                                <input type="submit" value="流量判别" style="height: 35px; width: 200px; color: red">
+                            </form>
+                        </div>
                     </div>
                     </c:if>
-                    <c:if test="${ empty res}">
-                        对不起，请求为空</a>
-                    </c:if>
+                    <%--<c:if test="${ empty res}">--%>
+                        <%--对不起，请求为空</a>--%>
+                    <%--</c:if>--%>
                 </div>
             </div>
 
@@ -123,11 +143,6 @@
     </div>
     </div>
     <div>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
         <br>
         <br>
         <br>

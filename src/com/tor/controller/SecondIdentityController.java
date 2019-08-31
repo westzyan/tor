@@ -32,6 +32,7 @@ public class SecondIdentityController {
     @RequestMapping(value = "/second/identity")
     public String identity(Model model,  String trainFilePath, String testFilePath, String feature, String algorithm) {
 
+        int count = 0;
         if (StringUtils.isEmpty(trainFilePath)||StringUtils.isEmpty(testFilePath)) {
             ServerResponse response = ServerResponse.createByErrorMessage("文件路径为空");
             model.addAttribute("res", response);
@@ -44,18 +45,48 @@ public class SecondIdentityController {
         else {
             //ServerResponse<List<Traffic>> response = iFirstIdentityService.getIdentityList(filePath);
             List<Flow> flowList = iSecondIdentityService.getLabelList(trainFilePath, testFilePath, feature, algorithm);
+
             if (flowList == null || flowList.size() == 0){
                 ServerResponse response =  ServerResponse.createByErrorMessage("没有读取到流");
                 model.addAttribute("res", response);
             }else {
+
+                for (int i = 0; i < flowList.size(); i++){
+                    if (!flowList.get(i).getLabel().equals("NONTOR")){
+                        count++;
+                    }
+                }
                 String flowListJson = JSON.toJSONString(flowList);
                 String selectFeatures = iSecondIdentityService.getFeatures(trainFilePath, feature);
                 model.addAttribute("res", ServerResponse.createBySuccess(flowListJson));
+                model.addAttribute("data",flowListJson);
                 model.addAttribute("select_features", selectFeatures);
                 model.addAttribute("flow_number", flowList.size());
+                model.addAttribute("flow_tor_number", count);
             }
         }
         return "second_identity";
+    }
+
+
+    @RequestMapping(value = "/second/identity_init")
+    public String identityInit(Model model) {
+
+        List<Flow> flowList = iSecondIdentityService.getLabelList("/home/ubuntu2/test/second/2018-11-26train.csv", "/home/ubuntu2/test/second/2018-11-27test.csv", "CfsSubsetEval+BestFirst", "C4.5");
+        String flowListJson = JSON.toJSONString(flowList);
+        String selectFeatures = iSecondIdentityService.getFeatures("/home/ubuntu2/test/second/2018-11-27test.csv", "CfsSubsetEval+BestFirst");
+        int count = 0;
+        for (int i = 0; i < flowList.size(); i++){
+            if (!flowList.get(i).getLabel().equals("NONTOR")){
+                count++;
+            }
+        }
+        model.addAttribute("res", ServerResponse.createBySuccess(flowListJson));
+        model.addAttribute("data",flowListJson);
+        model.addAttribute("select_features", selectFeatures);
+        model.addAttribute("flow_number", flowList.size());
+        model.addAttribute("flow_tor_number", count);
+        return "second_identity_2";
     }
 
 

@@ -68,7 +68,7 @@
                 <td>${pcap.isHandled}</td>
                 <td>${pcap.createTime}</td>
                 <td>${pcap.updateTime}</td>
-                <td><div> <a class="button border-main" href="/first/show_five_tuple?filePath=${pcap.filePath}" style="padding: 2px 8px;"><span class="icon-edit"></span>查看</a>
+                <td><div> <a class="button border-main" href="/first/show_five_tuple?filePath=${pcap.filePath}/${pcap.fileName}" style="padding: 2px 8px;"><span class="icon-edit"></span>查看</a>
                     <a class="button border-red" href="/pcap/delete_by_id?id=${pcap.id}" style="padding: 2px 8px;" onclick="return confirm('确定将此记录删除?')"><span class="icon-trash-o"></span> 删除</a> </div></td>
             </tr>
             </c:forEach>

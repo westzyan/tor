@@ -35,36 +35,16 @@
         <div class="content">
             <div class="basic">
                 <div class="basicInfo select active">
-                    <div class="thead">
-                        <form action="/second/identity" method="post">
-                            <span>训练文件路径<input type="textfield" name="trainFilePath" style="height: 35px; width: 80%;"><br>
-                                  测试文件路径<input type="textfield" name="testFilePath" style="height: 35px; width: 80%;"><br>
-
-                            特征筛选方法选择
-                                <select name="feature">
-                                    <option value=""></option>
-                                    <option value="CfsSubsetEval+BestFirst">CfsSubsetEval+BestFirst</option>
-                                    <%--<option value="Infogain+Ranker">Infogain+Ranker</option>--%>
-                                </select><br>
-                                分类算法选择
-                                <select name="algorithm">
-                                    <option value=""></option>
-                                    <option value="C4.5">J48(C4.5)        </option>
-                                    <option value="RandomForest">RandomForest        </option>
-                                </select>
-									  <input type=submit value="分类" style="height: 35px; width: 10%;">
-                            </span>
-                        </form>
-                    </div>
-                    <br><br><br><br><br><br><br><br>
+                    <br>
                     <div class="table">
                         <c:if test="${res.data != null}">
                             <div class="thead">
-                                <%--<span>选择的特征:${select_features}</span>--%>
-                                <span>流量总条数:${flow_number} TOR流量条数：${flow_tor_number}</span>
+                                    <%--<span>选择的特征:${select_features}</span>--%>
+                                <p>流量总条数:${flow_number} </p>
+                                        <p style="color: #ee3333">TOR流量条数：${flow_tor_number}</p>
                                 <p>Tor流量精确判别结果</p>
                             </div>
-                            <br><br><br>
+                            <br><br><br><br><br>
                             <div id="labelBox"></div>
 
                         </c:if>
@@ -73,11 +53,11 @@
                         <c:if test="${res.status} == 0">
                             <font size="4" color="red">0000${res.msg}</font>
                         </c:if>
+                    </div>
                 </div>
-            </div>
 
+            </div>
         </div>
-    </div>
     </div>
     <div>
         <br>
