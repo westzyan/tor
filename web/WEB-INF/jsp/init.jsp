@@ -45,7 +45,7 @@
 
 
     <div>
-        <a href="http://192.168.1.100/tor">态势感知</a>
+        <a href="http://labpc.bluarry.top/onion/user.php#">态势感知</a>
     </div>
 
 </body>

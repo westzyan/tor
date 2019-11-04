@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tor.mapper.BridgeRouterMapper">
+    <resultMap id="BaseResultMap" type="com.tor.pojo.BridgeRouter">
+        <constructor>
+            <idArg column="id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <arg column="ip" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="country_name" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="country_code" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="city" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="longitude" jdbcType="FLOAT" javaType="java.lang.Float"/>
+            <arg column="latitude" jdbcType="FLOAT" javaType="java.lang.Float"/>
+        </constructor>
+    </resultMap>
+
+
+    <sql id="Base_Column_List" >
+        id,
+        ip,
+        country_name,
+        country_code,
+        city,
+        longitude,
+        latitude
+    </sql>
+
+    <select id="selectAll" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from bridge
+    </select>
+
+</mapper>

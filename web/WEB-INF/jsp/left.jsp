@@ -11,7 +11,7 @@
 <div class="nav">
     <div class="nav-list">
         <div class="nav-tit">
-            <a href="http://192.168.1.100/tor" target="main"> <img
+            <a href="http://labpc.bluarry.top/onion/user.php#" target="main"> <img
                     src="images/personal-msg.png" style="height: 30px" alt=""> <span>全球态势</span>
             </a>
         </div>
@@ -65,15 +65,15 @@
             <%--</a>--%>
         <%--</div>--%>
         <div class="nav-tit">
-            <a href="/right" target="main"> <img
+            <a href="/bridge/list" target="main"> <img
                     src="images/soso-white.png" alt=""> <span>节点主动探测</span>
             </a>
         </div>
-        <div class="nav-tit">
-            <a href="/right" target="main"> <img
-                    src="images/soso-white.png" alt=""> <span>节点指纹溯源</span>
-            </a>
-        </div>
+        <%--<div class="nav-tit">--%>
+            <%--<a href="/right" target="main"> <img--%>
+                    <%--src="images/soso-white.png" alt=""> <span>节点指纹溯源</span>--%>
+            <%--</a>--%>
+        <%--</div>--%>
     </div>
 </div>
 
